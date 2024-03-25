@@ -11,9 +11,12 @@ app
   .route('/channels')
   // 채널 전체 조회
   .get((req, res) => {
-    const channels = Array.from(db.values());
-    if (channels.length > 0) {
-      return res.status(200).json({
+    let channels = [];
+    if (db.size) {
+      db.forEach((channel) => {
+        channels.push(channel);
+      });
+      return res.status(201).json({
         status: 200,
         channelList: channels,
       });
