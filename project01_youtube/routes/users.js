@@ -1,7 +1,6 @@
 const express = require('express');
-const app = express();
-app.listen(3001);
-app.use(express.json());
+const router = express.Router();
+router.use(express.json());
 
 // db 설정
 let db = new Map();
@@ -13,7 +12,7 @@ const isEmptyObject = (obj) => {
 
 // 로그인
 // forEach
-app.post('/signin', (req, res) => {
+router.post('/signin', (req, res) => {
   // userId가 디비에 저장된 회원인지 확인
   const { userId, password } = req.body;
 
@@ -37,36 +36,38 @@ app.post('/signin', (req, res) => {
 });
 
 //  회원가입
-app.post('/signup', (req, res) => {
+router.post('/signup', (req, res) => {
   const userData = req.body;
 
   if (userData) {
-    db.set(id++, userData);
+    db.set(userData.userId, userData);
     return res.status(201).json({ status: 200, msg: `${userData.name}님 회원가입 성공` });
   }
 
   res.status(400).json({ status: 400, msg: '데이터를 입력해주세요' });
 });
 
-//  회원 개별 조회
-app.get('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const user = db.get(parseInt(id));
-  if (user) {
-    return res.status(200).json({ status: 200, userId: user.userId, name: user.name });
-  }
-  res.status(404).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
-});
+router
+  .route('/users')
+  //  회원 개별 조회
+  .get((req, res) => {
+    const { userId } = req.body;
+    const user = db.get(userId);
+    if (user) {
+      return res.status(200).json({ status: 200, userId: user.userId, name: user.name });
+    }
+    res.status(404).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
+  })
+  //  회원 개별 탈퇴
+  .delete((req, res) => {
+    const { userId } = req.body;
+    const user = db.get(userId);
+    if (user) {
+      db.delete(userId);
+      return res.status(200).json({ status: 200, msg: `${user.name}님, 성공적으로 탈퇴가 됐습니다.` });
+    }
 
-//  회원 개별 탈퇴
-app.delete('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const user = db.get(parseInt(id));
+    res.status(400).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
+  });
 
-  if (user) {
-    db.delete(parseInt(id));
-    return res.status(200).json({ status: 200, msg: `${user.name}님, 성공적으로 탈퇴가 됐습니다.` });
-  }
-
-  res.status(400).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
-});
+module.exports = router;

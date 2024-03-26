@@ -1,34 +1,41 @@
 const express = require('express');
-const app = express();
-app.listen(3001);
-app.use(express.json());
+const router = express.Router();
+
+router.use(express.json());
 
 let db = new Map();
 let id = 1;
 
 // "/channels"
-app
-  .route('/channels')
+router
+  .route('/')
   // 채널 전체 조회
   .get((req, res) => {
+    let { userId } = req.body;
     let channels = [];
-    if (db.size) {
-      db.forEach((channel) => {
-        channels.push(channel);
+    if (db.size && userId) {
+      db.forEach((channel, id) => {
+        if (channel.userId === userId) {
+          channels.push(channel);
+        }
       });
-      return res.status(201).json({
-        status: 200,
-        channelList: channels,
-      });
+      if (channels.length) {
+        return res.status(200).json({
+          status: 200,
+          channelList: channels,
+        });
+      }
+      return notFoundChannel();
     }
-    res.status(404).json({
-      status: 404,
-      msg: '채널을 찾을 수 없습니다.',
-    });
+    // res.status(404).json({
+    //   status: 404,
+    //   msg: '로그인이 필요합니다.',
+    // });
+    notFoundChannel();
   })
   // 채널 개별 생성
   .post((req, res) => {
-    const channelData = req.body;
+    let channelData = req.body;
     if (channelData.channelTitle) {
       db.set(id++, channelData);
       return res.status(201).json({
@@ -40,20 +47,19 @@ app
   });
 
 // "/channels/:id"
-app
-  .route('/channels/:id')
+router
+  .route('/:id')
+  // 채널 개별 조회
   .get((req, res) => {
     const { id } = req.params;
     const channel = db.get(parseInt(id));
     if (!channel) {
-      return res.status(404).json({
-        status: 404,
-        msg: `채널을 찾을 수 없습니다.`,
-      });
+      return notFoundChannel();
     }
     res.status(200).json({
       status: 200,
-      msg: channel.channelTitle,
+      channelTitle: channel.channelTitle,
+      userId: channel.userId,
     });
   })
   .put((req, res) => {
@@ -65,12 +71,12 @@ app
       const preChannel = channel.channelTitle;
       channel.channelTitle = newTitle;
       db.set(id, channel);
-      return res.status(201).json({
-        status: 201,
+      return res.status(200).json({
+        status: 200,
         msg: `${preChannel} 채널명이 ${newTitle} 채널 명으로 성공적으로 수정됐습니다.`,
       });
     }
-    res.status(404).json({ status: 404, msg: '해당 채널을 찾을 수 없습니다.' });
+    notFoundChannel();
   })
   .delete((req, res) => {
     let { id } = req.params;
@@ -83,5 +89,11 @@ app
         msg: `${channel.channelTitle} 채널명이 성공적으로 삭제됐습니다.`,
       });
     }
-    res.status(404).json({ status: 404, msg: '해당 채널을 찾을 수 없습니다.' });
+    notFoundChannel();
   });
+
+function notFoundChannel() {
+  res.status(404).json({ status: 404, msg: '해당 채널을 찾을 수 없습니다.' });
+}
+
+module.exports = router;
