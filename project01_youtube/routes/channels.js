@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use(express.json());
-
+const dbConnection = require('../mariadb');
 let db = new Map();
 let id = 1;
 
@@ -12,38 +12,31 @@ router
   // 채널 전체 조회
   .get((req, res) => {
     let { userId } = req.body;
-    let channels = [];
-    if (db.size && userId) {
-      db.forEach((channel, id) => {
-        if (channel.userId === userId) {
-          channels.push(channel);
-        }
-      });
-      if (channels.length) {
-        return res.status(200).json({
-          status: 200,
-          channelList: channels,
-        });
-      }
-      return notFoundChannel();
+    const sql = `SELECT * FROM channels WHERE user_id=?`;
+
+    if (!userId) {
+      return res.status(200).json({ msg: '데이터를 작성해주세요' });
     }
-    // res.status(404).json({
-    //   status: 404,
-    //   msg: '로그인이 필요합니다.',
-    // });
-    notFoundChannel();
+
+    dbConnection.query(sql, userId, (_, results) => {
+      if (results.length) {
+        return res.status(200).json(results);
+      }
+      return notFoundChannel(res);
+    });
   })
   // 채널 개별 생성
   .post((req, res) => {
-    let channelData = req.body;
-    if (channelData.channelTitle) {
-      db.set(id++, channelData);
-      return res.status(201).json({
-        status: 201,
-        msg: `${channelData.channelTitle} 채널 생성을 성공적으로 완료하였습니다.`,
-      });
+    let { name, userId } = req.body;
+    const values = [name, userId];
+    const sql = `INSERT INTO channels (name, user_id) VALUES (?, ?)`;
+
+    if (!name || !userId) {
+      return res.status(404).json({ msg: '잘못된 데이터입니다.' });
     }
-    res.status(400).json({ status: 400, msg: '입력한 데이터가 없습니다.' });
+    dbConnection.query(sql, values, () => {
+      return res.status(201).json({ msg: '채널이 생성되었습니다.' });
+    });
   });
 
 // "/channels/:id"
@@ -51,15 +44,14 @@ router
   .route('/:id')
   // 채널 개별 조회
   .get((req, res) => {
-    const { id } = req.params;
-    const channel = db.get(parseInt(id));
-    if (!channel) {
-      return notFoundChannel();
-    }
-    res.status(200).json({
-      status: 200,
-      channelTitle: channel.channelTitle,
-      userId: channel.userId,
+    let { id } = req.params;
+    id = parseInt(id);
+    const sql = `SELECT * FROM channels WHERE id = ?`;
+    dbConnection.query(sql, id, (_, [results]) => {
+      if (results) {
+        return res.status(200).json(results);
+      }
+      return notFoundChannel(res);
     });
   })
   .put((req, res) => {
@@ -92,7 +84,7 @@ router
     notFoundChannel();
   });
 
-function notFoundChannel() {
+function notFoundChannel(res) {
   res.status(404).json({ status: 404, msg: '해당 채널을 찾을 수 없습니다.' });
 }
 

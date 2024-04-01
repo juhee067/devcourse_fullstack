@@ -2,72 +2,62 @@ const express = require('express');
 const router = express.Router();
 router.use(express.json());
 
-// db 설정
-let db = new Map();
-let id = 1;
-
-const isEmptyObject = (obj) => {
-  return Object.keys(obj).length !== 0;
-};
+const dbConnection = require('../mariadb');
 
 // 로그인
-// forEach
 router.post('/signin', (req, res) => {
-  // userId가 디비에 저장된 회원인지 확인
-  const { userId, password } = req.body;
+  const { email, password } = req.body;
+  const sql = `SELECT  * FROM users WHERE email=? AND password=?`;
 
-  let userData = {};
-  db.forEach((user, id) => {
-    if (user.userId == userId) {
-      userData = user;
+  dbConnection.query(sql, [email, password], (_, results) => {
+    const userData = results[0];
+    if (userData) {
+      return res.status(200).json({ status: 200, msg: `${userData.email}님 로그인 성공` });
     }
+    return res.status(400).json({ status: 400, msg: `아이디와 비번을 다시 확인해주세요` });
   });
-
-  // userID를 못찾았으면
-  // if (userData.userId) {
-  if (isEmptyObject(userData)) {
-    if (userData.password == password) {
-      return res.status(200).json({ status: 200, msg: `${userId}님 로그인 성공` });
-    }
-    res.status(400).json({ status: 400, msg: `비밀번호가 맞지않습니다.` });
-  } else {
-    res.status(400).json({ status: 400, msg: `${userId}, 입력하신 아이디는 없는 아이디입니다.` });
-  }
 });
 
 //  회원가입
 router.post('/signup', (req, res) => {
-  const userData = req.body;
+  const { email, name, password, tel } = req.body;
+  const requiredFields = [email, name, password, tel];
+  const sql = `INSERT INTO users (email, name, password, tel) VALUES (?, ?, ?, ?)`;
 
-  if (userData) {
-    db.set(userData.userId, userData);
-    return res.status(201).json({ status: 200, msg: `${userData.name}님 회원가입 성공` });
+  if (requiredFields.some((field) => !field)) {
+    return res.status(400).json({ status: 400, msg: '모든 필드를 입력해주세요.' });
   }
-
-  res.status(400).json({ status: 400, msg: '데이터를 입력해주세요' });
+  dbConnection.query(sql, requiredFields, (_, result) => {
+    console.log(result);
+    res.status(200).json({ status: 200 });
+  });
 });
 
 router
   .route('/users')
   //  회원 개별 조회
   .get((req, res) => {
-    const { userId } = req.body;
-    const user = db.get(userId);
-    if (user) {
-      return res.status(200).json({ status: 200, userId: user.userId, name: user.name });
-    }
-    res.status(404).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
+    const { email } = req.body;
+    const sql = `SELECT * FROM users WHERE email=?`;
+
+    dbConnection.query(sql, email, (_, results) => {
+      if (results) {
+        return res.status(200).json({ status: 200, results: results });
+      }
+      res.status(404).json({ status: 404, msg: '해당 유저가 존재하지 않습니다.' });
+    });
   })
   //  회원 개별 탈퇴
   .delete((req, res) => {
-    const { userId } = req.body;
-    const user = db.get(userId);
-    if (user) {
-      db.delete(userId);
-      return res.status(200).json({ status: 200, msg: `${user.name}님, 성공적으로 탈퇴가 됐습니다.` });
-    }
+    const { email } = req.body;
+    const sql = `DELETE FROM users WHERE email=?`;
 
-    res.status(400).json({ status: 400, msg: '해당 유저가 존재하지 않습니다.' });
+    dbConnection.query(sql, email, (_, results) => {
+      if (results) {
+        return res.status(200).json({ status: 200, msg: '회원정보가 삭제되었습니다.' });
+      }
+      res.status(404).json({ status: 404, msg: '해당 유저가 존재하지 않습니다.' });
+    });
   });
 
 module.exports = router;
