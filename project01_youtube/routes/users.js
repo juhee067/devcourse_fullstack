@@ -5,10 +5,14 @@ router.use(express.json());
 
 const dbConnection = require('../mariadb');
 const { body, param, validationResult } = require('express-validator');
-
+// jwt
+const jwt = require('jsonwebtoken');
+//dotenv
+const dotenv = require('dotenv');
+dotenv.config();
 const validate = (res, req, next) => {
   const err = validationResult(req);
-  //
+
   if (err.isEmpty()) {
     return next(); // 다음 할 일 (미들웨어, 함수);
   }
@@ -34,7 +38,12 @@ router.post(
 
       const userData = results[0];
       if (userData) {
-        return res.status(200).json({ status: 200, msg: `${userData.email}님 로그인 성공` });
+        // token 발급
+        const token = jwt.sign({ email: userData.email, name: userData.name }, process.env.PRIVATE_KEY);
+        //res.cookie();
+        return res
+          .status(200)
+          .json({ status: 200, msg: `${userData.email}님 로그인 성공`, token: token });
       }
       return res.status(400).json({ status: 400, msg: `아이디와 비번을 다시 확인해주세요` });
     });
