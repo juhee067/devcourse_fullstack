@@ -5,11 +5,13 @@ router.use(express.json());
 const dbConnection = require('../mariadb');
 const { body, param, validationResult } = require('express-validator');
 
-const validate = (res, req) => {
+const validate = (res, req, next) => {
   const err = validationResult(req);
-  if (!err.isEmpty()) {
-    return res.status(400).json(err.array());
+  //
+  if (err.isEmpty()) {
+    return next(); // 다음 할 일 (미들웨어, 함수);
   }
+  return res.status(400).json(err.array());
 };
 
 // "/channels"
@@ -18,19 +20,18 @@ router
   // 채널 전체 조회
   .get(
     [body('userId').notEmpty().isInt().withMessage('userId을 유효성에 맞게 작성해주세요'), validate],
-    (req, res) => {
-      validate(req, res);
+    (req, res, next) => {
       let { userId } = req.body;
       const sql = `SELECT * FROM channels WHERE user_id=?`;
 
-      dbConnection.query(sql, userId, (_, results) => {
+      dbConnection.query(sql, userId, (err, results) => {
         if (err) {
           return res.status(400).end();
         }
         if (results.length) {
           return res.status(200).json(results);
         }
-        return notFoundChannel(res);
+        res.status(404).json({ error: '채널을 찾을 수 없습니다.' });
       });
     }
   )
@@ -75,7 +76,7 @@ router
         if (results) {
           return res.status(200).json(results);
         }
-        return notFoundChannel(res);
+        res.status(404).json({ msg: '채널이 없습니다' });
       });
     }
   )
@@ -121,9 +122,5 @@ router
       });
     }
   );
-
-function notFoundChannel(res) {
-  res.status(404).json({ status: 404, msg: '해당 채널을 찾을 수 없습니다.' });
-}
 
 module.exports = router;
