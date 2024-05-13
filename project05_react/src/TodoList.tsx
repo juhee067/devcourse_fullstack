@@ -26,6 +26,10 @@ const TodoList: React.FC = () => {
       setNewTodo('');
     }
   };
+
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((item) => item.id !== id));
+  };
   return (
     <div className='todoListContainer'>
       <h1 style={{ color: '#fff' }}>{title}</h1>
@@ -54,6 +58,14 @@ const TodoList: React.FC = () => {
                 }}
               ></input>
               <span>{item.isChecked ? <del>{item.text}</del> : item.text}</span>
+              <Button
+                className='delbutton'
+                onClick={() => {
+                  deleteTodo(item.id);
+                }}
+              >
+                삭제
+              </Button>
             </li>
           ))}
         </ul>
