@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
-type Todo = {
+import TodoModal from './TodoModal';
+export type Todo = {
   id: number;
   text: string;
   isChecked: boolean;
@@ -13,6 +14,8 @@ const TodoList: React.FC = () => {
   ]);
 
   const [newTodo, setNewTodo] = useState<string>('');
+  const [detailTodo, setDetailTodo] = useState<boolean>(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   const handleCheckedChange = (id: number): void => {
     setTodos((prev) =>
@@ -30,8 +33,18 @@ const TodoList: React.FC = () => {
   const deleteTodo = (id: number) => {
     setTodos(todos.filter((item) => item.id !== id));
   };
+
+  const handleTodoClick = (todo: Todo) => {
+    setDetailTodo(true);
+    setSelectedTodo(todo);
+  };
+
+  const handleCloseDetailClick = () => {
+    setDetailTodo(false);
+  };
   return (
     <div className='todoListContainer'>
+      <TodoModal show={detailTodo} todo={selectedTodo} handleDetail={handleCloseDetailClick} />
       <h1 style={{ color: '#fff' }}>{title}</h1>
       <div>
         <input
@@ -57,7 +70,9 @@ const TodoList: React.FC = () => {
                   handleCheckedChange(item.id);
                 }}
               ></input>
-              <span>{item.isChecked ? <del>{item.text}</del> : item.text}</span>
+              <span onClick={() => handleTodoClick(item)}>
+                {item.isChecked ? <del>{item.text}</del> : item.text}
+              </span>
               <Button
                 className='delbutton'
                 onClick={() => {
