@@ -46,7 +46,7 @@ const initialState: IboardState = {
           tasks: [
             {
               taskId: 'task-3',
-              taskName: 'task 3',
+              taskName: 'task',
               taskDescription: 'des3',
               taskOwner: 'John3',
             },

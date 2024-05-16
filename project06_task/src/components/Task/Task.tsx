@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ITask } from '../../store/types';
+import { container, description, title } from './Task.css';
 type TTaskProps = {
   task: ITask;
   boardId: string;
@@ -7,9 +8,9 @@ type TTaskProps = {
 };
 const Task: FC<TTaskProps> = ({ task, boardId, index }) => {
   return (
-    <div>
-      <div>{task.taskName}</div>
-      <div>{task.taskDescription}</div>
+    <div className={container}>
+      <div className={title}> {task.taskName}</div>
+      <div className={description}>{task.taskDescription}</div>
     </div>
   );
 };
