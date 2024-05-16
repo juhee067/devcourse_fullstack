@@ -1,9 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IBoardItem } from '../types';
 
 type IboardState = {
   modalActive: boolean;
   boardArray: IBoardItem[];
+};
+
+type TAddBoardAction = {
+  board: IBoardItem;
 };
 
 const initialState: IboardState = {
@@ -51,7 +55,13 @@ const initialState: IboardState = {
 const boardSlice = createSlice({
   name: 'boards',
   initialState,
-  reducers: {},
+  reducers: {
+    // 보드를 추가하는 액션 정의
+    addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
+      state.boardArray.push(payload.board);
+    },
+  },
 });
 
+export const { addBoard } = boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
