@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Ilist } from '../../store/types';
+import { ITask, Ilist } from '../../store/types';
 import { GrSubtract } from 'react-icons/gr';
 import Task from '../Task/Task';
 import ActionButton from '../ActionButton/DropDownForm/ActionButton';
@@ -7,6 +7,7 @@ import { useTypedDispatch } from '../../hooks/redux';
 import { deleteList } from '../../store/slices/boardSlice';
 import { addLog } from '../../store/slices/loggerSlice';
 import { v4 } from 'uuid';
+import { setModalData } from '../../store/slices/modalSlice';
 
 type TListProps = {
   list: Ilist;
@@ -26,6 +27,10 @@ const List: FC<TListProps> = ({ list, boardId }) => {
       })
     );
   };
+
+  const handleTaskChange = (boardId: string, listId: string, taskId: string, task: ITask) => {
+    dispatch(setModalData({ boardId, listId, task }));
+  };
   return (
     <div>
       <div>
@@ -34,7 +39,9 @@ const List: FC<TListProps> = ({ list, boardId }) => {
       </div>
 
       {list.tasks.map((task, index) => (
-        <Task task={task} boardId={boardId} index={index} />
+        <div key={task.taskId} onClick={() => handleTaskChange(boardId, list.listId, task.taskId)}>
+          <Task task={task} boardId={boardId} index={index} />
+        </div>
       ))}
       <div>
         <ActionButton /> 새로운 일 등록
