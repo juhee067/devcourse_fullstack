@@ -31,6 +31,26 @@ const DropDownForm: FC<TDropDownFormProps> = ({ setIsFormOpen, boardId, listId, 
           })
         );
       } else {
+        dispatch(
+          addTask({
+            boardId,
+            listId,
+            task: {
+              taskId: v4(),
+              taskName: text,
+              taskDescription: '',
+              taskOwner: 'User',
+            },
+          })
+        );
+        dispatch(
+          addLog({
+            logId: v4(),
+            logMessage: `일 생성하기: ${text}`,
+            logAuthor: 'User',
+            logTimestamp: String(Date.now()),
+          })
+        );
       }
     }
   };
