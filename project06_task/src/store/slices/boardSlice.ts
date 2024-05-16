@@ -72,8 +72,11 @@ const boardSlice = createSlice({
           : board
       );
     },
+    setModalActive: (state, { payload }: PayloadAction<boolean>) => {
+      state.modalActive = payload;
+    },
   },
 });
 
-export const { addBoard, deleteList } = boardSlice.actions;
+export const { addBoard, deleteList, setModalActive } = boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;

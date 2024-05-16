@@ -4,7 +4,7 @@ import { GrSubtract } from 'react-icons/gr';
 import Task from '../Task/Task';
 import ActionButton from '../ActionButton/DropDownForm/ActionButton';
 import { useTypedDispatch } from '../../hooks/redux';
-import { deleteList } from '../../store/slices/boardSlice';
+import { deleteList, setModalActive } from '../../store/slices/boardSlice';
 import { addLog } from '../../store/slices/loggerSlice';
 import { v4 } from 'uuid';
 import { setModalData } from '../../store/slices/modalSlice';
@@ -30,6 +30,7 @@ const List: FC<TListProps> = ({ list, boardId }) => {
 
   const handleTaskChange = (boardId: string, listId: string, taskId: string, task: ITask) => {
     dispatch(setModalData({ boardId, listId, task }));
+    dispatch(setModalActive(true));
   };
   return (
     <div>
@@ -39,7 +40,7 @@ const List: FC<TListProps> = ({ list, boardId }) => {
       </div>
 
       {list.tasks.map((task, index) => (
-        <div key={task.taskId} onClick={() => handleTaskChange(boardId, list.listId, task.taskId)}>
+        <div key={task.taskId} onClick={() => handleTaskChange(boardId, list.listId, task.taskId, task)}>
           <Task task={task} boardId={boardId} index={index} />
         </div>
       ))}
