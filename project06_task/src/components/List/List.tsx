@@ -5,6 +5,8 @@ import Task from '../Task/Task';
 import ActionButton from '../ActionButton/DropDownForm/ActionButton';
 import { useTypedDispatch } from '../../hooks/redux';
 import { deleteList } from '../../store/slices/boardSlice';
+import { addLog } from '../../store/slices/loggerSlice';
+import { v4 } from 'uuid';
 
 type TListProps = {
   list: Ilist;
@@ -15,6 +17,14 @@ const List: FC<TListProps> = ({ list, boardId }) => {
   const dispatch = useTypedDispatch();
   const handleListDelete = (listId: string) => {
     dispatch(deleteList({ listId, boardId }));
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `리스트 삭제하기:${list.listName}`,
+        logAuthor: 'User',
+        logTimestamp: String(Date.now()),
+      })
+    );
   };
   return (
     <div>
