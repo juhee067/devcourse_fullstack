@@ -76,7 +76,6 @@ const boardSlice = createSlice({
     },
     addList: (state, { payload }: PayloadAction<TAddListAction>) => {
       state.boardArray.map(
-        //board.boardId === payload.boardId ? { ...board, lists: board.lists.push(payload.list) } : board
         (board) => board.boardId === payload.boardId && board.lists.push(payload.list)
       );
     },

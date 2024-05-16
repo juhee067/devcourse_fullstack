@@ -4,6 +4,7 @@ import { useTypedDispatch } from '../../../hooks/redux';
 import { addList, addTask } from '../../../store/slices/boardSlice';
 import { v4 } from 'uuid';
 import { addLog } from '../../../store/slices/loggerSlice';
+import { button, buttons, listForm, taskForm, close } from './DropDownForm.css';
 type TDropDownFormProps = {
   setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   boardId: string;
@@ -55,7 +56,7 @@ const DropDownForm: FC<TDropDownFormProps> = ({ setIsFormOpen, boardId, listId, 
     }
   };
   return (
-    <div>
+    <div className={list ? listForm : taskForm}>
       <textarea
         autoFocus
         value={text}
@@ -63,8 +64,12 @@ const DropDownForm: FC<TDropDownFormProps> = ({ setIsFormOpen, boardId, listId, 
         onBlur={() => setIsFormOpen(false)}
         placeholder={formPlaceholder}
       />
-      <button onMouseDown={handleButtonClick}>{buttonTitle}</button>
-      <FiX />
+      <div className={buttons}>
+        <button className={button} onMouseDown={handleButtonClick}>
+          {buttonTitle}
+        </button>
+        <FiX className={close} />
+      </div>
     </div>
   );
 };
