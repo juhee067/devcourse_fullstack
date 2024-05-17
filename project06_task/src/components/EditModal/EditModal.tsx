@@ -32,6 +32,7 @@ const EditModal = () => {
     );
     dispatch(setModalActive(false));
   };
+
   const handleDelete = () => {
     dispatch(
       deleteTask({
