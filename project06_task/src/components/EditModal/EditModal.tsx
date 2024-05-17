@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
-import { setModalActive, updateTask } from '../../store/slices/boardSlice';
+import { deleteTask, setModalActive, updateTask } from '../../store/slices/boardSlice';
 import { addLog } from '../../store/slices/loggerSlice';
 import { v4 } from 'uuid';
 
@@ -30,6 +30,25 @@ const EditModal = () => {
         logTimestamp: String(Date.now()),
       })
     );
+    dispatch(setModalActive(false));
+  };
+  const handleDelete = () => {
+    dispatch(
+      deleteTask({
+        boardId: editingState.boardId,
+        listId: editingState.listId,
+        taskId: editingState.task.taskId,
+      })
+    );
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `일 삭제하기 :  ${editingState.task.taskName}`,
+        logAuthor: 'User',
+        logTimestamp: String(Date.now()),
+      })
+    );
+    dispatch(setModalActive(false));
   };
   return (
     <div>
@@ -51,7 +70,7 @@ const EditModal = () => {
       </div>
       <div>
         <button onClick={handleUpdate}>수정하기</button>
-        <button>삭제하기</button>
+        <button onClick={handleDelete}>삭제하기</button>
       </div>
     </div>
   );
