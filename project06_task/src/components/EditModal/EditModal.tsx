@@ -1,0 +1,34 @@
+import React, { useState } from 'react';
+import { FiX } from 'react-icons/fi';
+import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
+import { setModalActive } from '../../store/slices/boardSlice';
+
+const EditModal = () => {
+  const dispatch = useTypedDispatch();
+  const editingState = useTypedSelector((state) => state.modal);
+  const [data, setData] = useState(editingState);
+  const handleCloseButton = () => {
+    dispatch(setModalActive(false));
+  };
+  return (
+    <div>
+      <div>
+        <div>
+          <div>{editingState.task.taskName}</div> <FiX onClick={handleCloseButton} />
+        </div>
+        <div>제목</div>
+        <input type='text' value={data.task.taskName} />
+        <div>설명</div>
+        <input type='text' value={data.task.taskDescription} />
+        <div>생성한 사람</div>
+        <input type='text' value={data.task.taskOwner} />
+      </div>
+      <div>
+        <button>수정하기</button>
+        <button>삭제하기</button>
+      </div>
+    </div>
+  );
+};
+
+export default EditModal;
