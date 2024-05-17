@@ -4,6 +4,17 @@ import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
 import { deleteTask, setModalActive, updateTask } from '../../store/slices/boardSlice';
 import { addLog } from '../../store/slices/loggerSlice';
 import { v4 } from 'uuid';
+import {
+  buttons,
+  closeButton,
+  deleteButton,
+  header,
+  input,
+  modalWindow,
+  title,
+  updateButton,
+  wrapper,
+} from './EditModal.css';
 
 const EditModal = () => {
   const dispatch = useTypedDispatch();
@@ -52,26 +63,44 @@ const EditModal = () => {
     dispatch(setModalActive(false));
   };
   return (
-    <div>
-      <div>
-        <div>
-          <div>{editingState.task.taskName}</div> <FiX onClick={handleCloseButton} />
+    <div className={wrapper}>
+      <div className={modalWindow}>
+        <div className={header}>
+          <div className={title}>{editingState.task.taskName}</div>{' '}
+          <FiX className={closeButton} onClick={handleCloseButton} />
         </div>
-        <div>제목</div>
-        <input type='text' name='taskName' onChange={handleChange} value={data.task.taskName} />
-        <div>설명</div>
+        <div className={title}>제목</div>
         <input
+          className={input}
+          type='text'
+          name='taskName'
+          onChange={handleChange}
+          value={data.task.taskName}
+        />
+        <div className={title}>설명</div>
+        <input
+          className={input}
           type='text'
           name='taskDescription'
           onChange={handleChange}
           value={data.task.taskDescription}
         />
-        <div>생성한 사람</div>
-        <input type='text' name='taskOwner' onChange={handleChange} value={data.task.taskOwner} />
-      </div>
-      <div>
-        <button onClick={handleUpdate}>수정하기</button>
-        <button onClick={handleDelete}>삭제하기</button>
+        <div className={title}>생성한 사람</div>
+        <input
+          className={input}
+          type='text'
+          name='taskOwner'
+          onChange={handleChange}
+          value={data.task.taskOwner}
+        />
+        <div className={buttons}>
+          <button className={updateButton} onClick={handleUpdate}>
+            수정하기
+          </button>
+          <button className={deleteButton} onClick={handleDelete}>
+            삭제하기
+          </button>
+        </div>
       </div>
     </div>
   );
