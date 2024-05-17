@@ -3,6 +3,7 @@ import { useTypedSelector } from '../../hooks/redux';
 import { FiX } from 'react-icons/fi';
 import LogItem from './LogItem/LogItem';
 import { wrapper, modalWindow, header, title, closeButton, body } from './LoggerModal.css';
+import { ILogItem } from '../../store/types';
 
 type TLoggerModalProps = {
   setIsLoggerOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,7 @@ const LoggerModal = ({ setIsLoggerOpen }: TLoggerModalProps) => {
           <FiX className={closeButton} onClick={() => setIsLoggerOpen(false)} />
         </div>
         <div className={body}>
-          {logs.map((log) => (
+          {logs.map((log: ILogItem) => (
             <LogItem key={log.logId} logItem={log} />
           ))}
         </div>
