@@ -29,6 +29,9 @@ type TDeleteListAction = {
   boardId: string;
   listId: string;
 };
+type TDeleteBoardAction = {
+  boardId: string;
+};
 
 const initialState: IboardState = {
   modalActive: false,
@@ -79,6 +82,9 @@ const boardSlice = createSlice({
     // 보드를 추가하는 액션 정의
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boardArray.push(payload.board);
+    },
+    deleteBoard: (state, { payload }: PayloadAction<TDeleteBoardAction>) => {
+      state.boardArray = state.boardArray.filter((board) => board.boardId !== payload.boardId);
     },
     addList: (state, { payload }: PayloadAction<TAddListAction>) => {
       state.boardArray.map(
@@ -147,6 +153,14 @@ const boardSlice = createSlice({
   },
 });
 
-export const { addBoard, addList, addTask, deleteList, setModalActive, updateTask, deleteTask } =
-  boardSlice.actions;
+export const {
+  addBoard,
+  addList,
+  addTask,
+  deleteList,
+  setModalActive,
+  updateTask,
+  deleteTask,
+  deleteBoard,
+} = boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
