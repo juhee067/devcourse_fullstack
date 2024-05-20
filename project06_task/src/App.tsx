@@ -9,12 +9,11 @@ import LoggerModal from './components/LoggerModal/LoggerModal';
 import { deleteBoard, sort } from './store/slices/boardSlice';
 import { addLog } from './store/slices/loggerSlice';
 import { v4 } from 'uuid';
-import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
+import { DragDropContext } from '@hello-pangea/dnd';
 
 function App() {
   const [isLoggerOpen, setIsLoggerOpen] = useState(false);
   const [activeBoardId, setActiveBoardId] = useState('board-0');
-  const [list, setLlist] = useState('');
 
   const modalActive = useTypedSelector((state) => state.boards.modalActive);
   const boards = useTypedSelector((state) => state.boards.boardArray);
