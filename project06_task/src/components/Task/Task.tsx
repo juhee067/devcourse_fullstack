@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ITask } from '../../store/types';
 import { container, description, title } from './Task.css';
 import { Draggable } from '@hello-pangea/dnd';

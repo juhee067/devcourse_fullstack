@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
 import SideForm from './SideForm/SideForm';
 import { FiLogIn, FiPlusCircle } from 'react-icons/fi';
@@ -7,9 +7,10 @@ import clsx from 'clsx';
 import { GoSignOut } from 'react-icons/go';
 import { getAuth, signInWithPopup, signOut } from 'firebase/auth';
 import { app } from '../../firebase';
-import { GoogleAuthProvider } from 'firebase/auth/cordova';
+import { GoogleAuthProvider } from 'firebase/auth';
 import { removeUser, setUser } from '../../store/slices/userSlice';
 import { useAuth } from '../../hooks/useAuth';
+import { IBoardItem } from '../../store/types';
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -23,6 +24,7 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
 
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+
   const handleClick = () => {
     setIsFormOpen(!isFormOpen);
   };
@@ -51,7 +53,7 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
   return (
     <div className={container}>
       <div className={title}>게시판</div>
-      {boardArray.map((board, index) => {
+      {boardArray.map((board: IBoardItem, index: number) => {
         const isActive = activeBoardIndex === index;
         return (
           <div

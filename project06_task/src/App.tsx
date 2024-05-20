@@ -3,13 +3,13 @@ import { appContainer, board, buttons, deleteBoardButton, loggerButton } from '.
 import BoardList from './components/BoardList/BoardList';
 import ListsContainer from './components/ListContainer/ListsContainer';
 import { useTypedDispatch, useTypedSelector } from './hooks/redux';
-import { IBoardItem } from './store/types';
+import { IBoardItem, ITask, Ilist } from './store/types';
 import EditModal from './components/EditModal/EditModal';
 import LoggerModal from './components/LoggerModal/LoggerModal';
 import { deleteBoard, sort } from './store/slices/boardSlice';
 import { addLog } from './store/slices/loggerSlice';
 import { v4 } from 'uuid';
-import { DragDropContext } from '@hello-pangea/dnd';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 
 function App() {
   const [isLoggerOpen, setIsLoggerOpen] = useState(false);
@@ -45,12 +45,16 @@ function App() {
     }
   };
 
-  const handleEnd = (result: any) => {
+  const handleEnd = (result: DropResult): void => {
     const { destination, source, draggableId } = result;
-    const sourceList = lists.filter((list) => list === source.droppableId)[0];
+
+    if (!destination) return; // destination이 null일 경우 처리
+
+    const sourceList = lists.filter((list: Ilist) => list.listId === source.droppableId)[0];
+
     dispatch(
       sort({
-        boardIndex: boards.findIndex((board) => board.boardId === activeBoardId),
+        boardIndex: boards.findIndex((board: IBoardItem) => board.boardId === activeBoardId),
         droppableIdStart: source.droppableId,
         droppableIdEnd: destination.droppableId,
         droppableIndexStart: source.index,
@@ -62,8 +66,10 @@ function App() {
       addLog({
         logId: v4(),
         logMessage: `리스트 : ${sourceList.listName} 에서 리스트 ${
-          lists.filter((list) => list.listId === destination.droppableId)[0].listName
-        }으로  ${sourceList.tasks.filter((task) => task.taskId === draggableId)[0].taskName}을 옮김 `,
+          lists.filter((list: Ilist) => list.listId === destination.droppableId)[0].listName
+        }으로  ${
+          sourceList.tasks.filter((task: ITask) => task.taskId === draggableId)[0].taskName
+        }을 옮김 `,
         logAuthor: 'User',
         logTimestamp: String(Date.now()),
       })

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ITask, Ilist } from '../../store/types';
 import { GrSubtract } from 'react-icons/gr';
 import Task from '../Task/Task';
@@ -30,7 +30,7 @@ const List: FC<TListProps> = ({ list, boardId }) => {
     );
   };
 
-  const handleTaskChange = (boardId: string, listId: string, taskId: string, task: ITask) => {
+  const handleTaskChange = (boardId: string, listId: string, task: ITask) => {
     dispatch(setModalData({ boardId, listId, task }));
     dispatch(setModalActive(true));
   };
@@ -43,10 +43,7 @@ const List: FC<TListProps> = ({ list, boardId }) => {
             <GrSubtract className={deleteButton} onClick={() => handleListDelete(list.listId)} />
           </div>
           {list.tasks.map((task, index) => (
-            <div
-              key={task.taskId}
-              onClick={() => handleTaskChange(boardId, list.listId, task.taskId, task)}
-            >
+            <div key={task.taskId} onClick={() => handleTaskChange(boardId, list.listId, task)}>
               <Task task={task} boardId={boardId} index={index} />
             </div>
           ))}

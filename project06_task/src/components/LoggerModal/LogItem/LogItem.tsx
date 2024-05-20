@@ -1,4 +1,3 @@
-import React from 'react';
 import { ILogItem } from '../../../store/types';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { logItemWrap, author, message, date } from './LogItem.css';
