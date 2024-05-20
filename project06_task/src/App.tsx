@@ -6,13 +6,16 @@ import { useTypedDispatch, useTypedSelector } from './hooks/redux';
 import { IBoardItem } from './store/types';
 import EditModal from './components/EditModal/EditModal';
 import LoggerModal from './components/LoggerModal/LoggerModal';
-import { deleteBoard } from './store/slices/boardSlice';
+import { deleteBoard, sort } from './store/slices/boardSlice';
 import { addLog } from './store/slices/loggerSlice';
 import { v4 } from 'uuid';
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 
 function App() {
   const [isLoggerOpen, setIsLoggerOpen] = useState(false);
   const [activeBoardId, setActiveBoardId] = useState('board-0');
+  const [list, setLlist] = useState('');
+
   const modalActive = useTypedSelector((state) => state.boards.modalActive);
   const boards = useTypedSelector((state) => state.boards.boardArray);
 
@@ -42,14 +45,43 @@ function App() {
       alert('최소 게시판 개수는 한 개입니다.');
     }
   };
+
+  const handleEnd = (result: any) => {
+    const { destination, source, draggableId } = result;
+    const sourceList = lists.filter((list) => list === source.droppableId)[0];
+    dispatch(
+      sort({
+        boardIndex: boards.findIndex((board) => board.boardId === activeBoardId),
+        droppableIdStart: source.droppableId,
+        droppableIdEnd: destination.droppableId,
+        droppableIndexStart: source.index,
+        droppableIndexEnd: destination.index,
+        draggableId: draggableId,
+      })
+    );
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `리스트 : ${sourceList.listName} 에서 리스트 ${
+          lists.filter((list) => list.listId === destination.droppableId)[0].listName
+        }으로  ${sourceList.tasks.filter((task) => task.taskId === draggableId)[0].taskName}을 옮김 `,
+        logAuthor: 'User',
+        logTimestamp: String(Date.now()),
+      })
+    );
+  };
   return (
     <div className={appContainer}>
       {modalActive && <EditModal />}
       {isLoggerOpen && <LoggerModal setIsLoggerOpen={setIsLoggerOpen} />}
+
       <BoardList activeBoardId={activeBoardId} setActiveBoardId={setActiveBoardId} />
       <div className={board}>
-        <ListsContainer lists={lists} boardId={getActiveBoard.boardId} />
+        <DragDropContext onDragEnd={handleEnd}>
+          <ListsContainer lists={lists} boardId={getActiveBoard.boardId} />{' '}
+        </DragDropContext>
       </div>
+
       <div className={buttons}>
         <button className={deleteBoardButton} onClick={handleDelteBoard}>
           게시판 삭세하기
