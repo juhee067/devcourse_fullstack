@@ -5,10 +5,11 @@ import { FiLogIn, FiPlusCircle } from 'react-icons/fi';
 import { addButton, addSection, boardItem, boardItemActive, container, title } from './BoardList.css';
 import clsx from 'clsx';
 import { GoSignOut } from 'react-icons/go';
-import { getAuth, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInWithPopup, signOut } from 'firebase/auth';
 import { app } from '../../firebase';
 import { GoogleAuthProvider } from 'firebase/auth/cordova';
-import { setUser } from '../../store/slices/userSlice';
+import { removeUser, setUser } from '../../store/slices/userSlice';
+import { useAuth } from '../../hooks/useAuth';
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -36,7 +37,17 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
         console.log(error);
       });
   };
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(removeUser());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
+  const { isAuth } = useAuth();
   return (
     <div className={container}>
       <div className={title}>게시판</div>
@@ -65,13 +76,11 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
         ) : (
           <FiPlusCircle className={addButton} onClick={handleClick} />
         )}
-        {/* {isFormOpen ? (
-          <GoSignOut className={addButton} />
+        {isAuth ? (
+          <GoSignOut className={addButton} onClick={handleSignOut} />
         ) : (
           <FiLogIn className={addButton} onClick={handleLogin} />
-        )} */}
-        <GoSignOut className={addButton} />
-        <FiLogIn className={addButton} onClick={handleLogin} />
+        )}
       </div>
     </div>
   );
