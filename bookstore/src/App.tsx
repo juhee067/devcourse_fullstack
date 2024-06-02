@@ -2,7 +2,7 @@ import Layout from './layout/Layout';
 import Home from './pages/Home';
 
 import { BookStoreThemeProvider } from './context/themeContext';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Error from './components/common/Error';
 import Signup from './pages/Signup';
 const router = createBrowserRouter([
@@ -10,18 +10,20 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <Layout>
-        <Home />
+        <Outlet />
       </Layout>
     ),
     errorElement: <Error />,
-  },
-  {
-    path: '/signup',
-    element: (
-      <Layout>
-        <Signup />
-      </Layout>
-    ),
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/signup',
+        element: <Signup />,
+      },
+    ],
   },
 ]);
 

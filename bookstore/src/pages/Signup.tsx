@@ -2,34 +2,60 @@ import styled from 'styled-components';
 import { Title } from '../components/common/Title';
 import InputText from '../components/common/InputText';
 import Button from '../components/common/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { signup } from '../api/auth.api';
+import { useAlert } from '../hooks/useAlert';
 
+export interface SignupProps {
+  email: string;
+  password: string;
+}
 function Signup() {
-  const [email, setEmail] = useState(''); // useState 훅을 사용하여 이메일 상태를 초기화합니다.
-  const [password, setPassword] = useState(''); // useState 훅을 사용하여 비밀번호 상태를 초기화합니다.
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // 기본 제출 동작을 막습니다.
-    console.log(email, password); // 이메일과 비밀번호를 콘솔에 출력합니다.
+  const navigate = useNavigate();
+  const showAlert = useAlert();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupProps>();
+
+  const onSubmit = (data: SignupProps) => {
+    // 화살표 함수로 수정합니다.
+    signup(data) // 회원가입 데이터를 서버에 전송합니다.
+      .then((res) => {
+        // Promise 체이닝을 사용하여 응답을 처리합니다.
+        // 성공 시
+        showAlert('회원가입이 완료되었습니다.'); // 알림창을 띄웁니다.
+        navigate('/login'); // 로그인 페이지로 이동합니다.
+      })
+      .catch((error) => {
+        // 에러가 발생하면
+        console.error('Error signing up:', error); // 콘솔에 에러를 출력합니다.
+        // 에러 처리를 추가할 수 있습니다.
+      });
   };
   return (
     <div>
       <Title size='large'>회원가입</Title>
       <SignupStyle>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset>
             <InputText
               placeholder='이메일'
               inputType='email'
-              onChange={(e) => setEmail(e.target.value)}
+              {...register('email', { required: true })}
             />
+            {errors.email && <p className='error-text'>이메일을 입력해주세요.</p>}
           </fieldset>
           <fieldset>
             <InputText
               placeholder='비밀번호'
               inputType='password'
-              onChange={(e) => setPassword(e.target.value)}
+              {...register('password', { required: true })}
             />
+            {errors.password && <p className='error-text'>비밀번호를 입력해주세요.</p>}
           </fieldset>
           <fieldset>
             <Button type='submit' size='medium' scheme='primary'>
