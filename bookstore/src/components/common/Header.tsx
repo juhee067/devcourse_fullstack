@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import ThemeSwitcher from '../header/ThemeSwitch';
 import logo from '../../assets/images/logo.svg';
 import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
+import Link from 'next/link';
 const CATEGORY = [
   {
     id: null,
@@ -26,7 +27,7 @@ const CategoryList = () => (
     <ul>
       {CATEGORY.map((item) => (
         <li key={item.id}>
-          <a href={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>{item.name}</a>
+          <Link to={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>{item.name}</Link>
         </li>
       ))}
     </ul>
