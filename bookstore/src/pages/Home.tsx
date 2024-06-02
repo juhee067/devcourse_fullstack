@@ -1,15 +1,15 @@
-// import Footer from '../components/common/Footer';
-// import Header from '../components/common/Header';
-// import { formatNumber } from '../utils/format';
+import Button from '../components/common/Button';
+import { Title } from '../components/common/Title';
 
-// const COUNT = 10000;
 const Home = () => {
   return (
     <>
-      {/* <Header />
-      <div>Home</div>
-      <div>count : {formatNumber(COUNT)}</div>
-      <Footer /> */}
+      <Title size='medium' color='background'>
+        제목 테스트
+      </Title>
+      <Button size='large' scheme='normal'>
+        테스트
+      </Button>
     </>
   );
 };
