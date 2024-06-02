@@ -1,16 +1,13 @@
 import Layout from './layout/Layout';
 import Home from './pages/Home';
 
-import ThemeSwitch from './components/header/ThemeSwitch';
-import { useContext } from 'react';
-import { BookStoreThemeProvider, ThemeContext } from './context/themeContext';
+import { BookStoreThemeProvider } from './context/themeContext';
+import Header from './components/common/Header';
 
 function App() {
-  const { themeName, setThemeName } = useContext(ThemeContext);
-
   return (
     <BookStoreThemeProvider>
-      <ThemeSwitch />
+      <Header />
       <Layout>
         <Home />
       </Layout>
