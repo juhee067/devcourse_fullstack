@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import { BookStoreThemeProvider } from './context/themeContext';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Error from './components/common/Error';
+import Signup from './pages/Signup';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -15,10 +16,10 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: '/books',
+    path: '/signup',
     element: (
       <Layout>
-        <div>도서목록</div>
+        <Signup />
       </Layout>
     ),
   },

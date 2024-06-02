@@ -2,37 +2,24 @@ import { styled } from 'styled-components';
 import ThemeSwitcher from '../header/ThemeSwitch';
 import logo from '../../assets/images/logo.svg';
 import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
-import Link from 'next/link';
-const CATEGORY = [
-  {
-    id: null,
-    name: '전체',
-  },
-  {
-    id: 0,
-    name: '동화',
-  },
-  {
-    id: 1,
-    name: '소설',
-  },
-  {
-    id: 2,
-    name: '사회',
-  },
-];
+import { Link } from 'react-router-dom';
 
-const CategoryList = () => (
-  <nav className='category'>
-    <ul>
-      {CATEGORY.map((item) => (
-        <li key={item.id}>
-          <Link to={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>{item.name}</Link>
-        </li>
-      ))}
-    </ul>
-  </nav>
-);
+import { useCategory } from '../../hooks/useCategory';
+
+const CategoryList = () => {
+  const { category } = useCategory();
+  return (
+    <nav className='category'>
+      <ul>
+        {category.map((item) => (
+          <li key={item.id}>
+            <Link to={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>{item.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
 
 const Auth = () => (
   <nav className='auth'>
@@ -52,7 +39,7 @@ const Auth = () => (
   </nav>
 );
 
-function Header() {
+const Header = () => {
   return (
     <HeaderStyle>
       <h1 className='logo'>
@@ -63,7 +50,7 @@ function Header() {
       {/* <ThemeSwitcher /> */}
     </HeaderStyle>
   );
-}
+};
 
 const HeaderStyle = styled.header`
   width: 100%;
