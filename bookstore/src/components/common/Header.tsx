@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import ThemeSwitcher from '../header/ThemeSwitch';
+//import ThemeSwitcher from '../header/ThemeSwitch';
 import logo from '../../assets/images/logo.svg';
 import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -8,12 +8,15 @@ import { useCategory } from '../../hooks/useCategory';
 
 const CategoryList = () => {
   const { category } = useCategory();
+  console.log(category);
   return (
     <nav className='category'>
       <ul>
         {category.map((item) => (
           <li key={item.id}>
-            <Link to={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>{item.name}</Link>
+            <Link to={item.id === null ? `/books?` : `/books?category_id=${item.id}`}>
+              {item.category_name}
+            </Link>
           </li>
         ))}
       </ul>

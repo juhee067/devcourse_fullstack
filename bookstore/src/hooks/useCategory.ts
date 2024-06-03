@@ -12,7 +12,7 @@ export const useCategory = () => {
         const categories = await fetchCategory(); // 카테고리를 가져옵니다.
         if (!categories) return;
 
-        const categoryWithAll = [{ id: null, name: '전체' }, ...categories];
+        const categoryWithAll = [{ id: null, category_name: '전체' }, ...categories];
 
         setCategory(categoryWithAll);
       } catch (error) {
