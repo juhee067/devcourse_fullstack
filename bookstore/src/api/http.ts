@@ -1,11 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const BASE_URL = 'http://localhost:3000';
 const DEFAULT_TIMEOUT = 30000;
 
 export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: 'http://localhost:3000',
     timeout: DEFAULT_TIMEOUT,
     headers: {
       'content-type': 'application/json',

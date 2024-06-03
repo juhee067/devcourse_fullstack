@@ -11,3 +11,13 @@ export const signup = async (userData: SignupProps) => {
     throw error; // 에러를 다시 던져서 상위 호출자가 처리하도록 합니다.
   }
 };
+
+export const resetRequest = async (data: SignupProps) => {
+  const response = await httpClient.post('/users/reset', data);
+  return response.data;
+};
+
+export const resetPassword = async (data: SignupProps) => {
+  const response = await httpClient.put('/users/reset', data);
+  return response.data;
+};

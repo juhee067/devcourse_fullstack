@@ -3,7 +3,7 @@ import { Title } from '../components/common/Title';
 import InputText from '../components/common/InputText';
 import Button from '../components/common/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { signup } from '../api/auth.api';
 import { useAlert } from '../hooks/useAlert';
@@ -24,7 +24,7 @@ function Signup() {
   const onSubmit = (data: SignupProps) => {
     // 화살표 함수로 수정합니다.
     signup(data) // 회원가입 데이터를 서버에 전송합니다.
-      .then((res) => {
+      .then(() => {
         // Promise 체이닝을 사용하여 응답을 처리합니다.
         // 성공 시
         showAlert('회원가입이 완료되었습니다.'); // 알림창을 띄웁니다.
@@ -71,7 +71,7 @@ function Signup() {
   );
 }
 
-const SignupStyle = styled.div`
+export const SignupStyle = styled.div`
   max-width: ${({ theme }) => theme.layout.width.small};
   margin: 80px auto;
 
