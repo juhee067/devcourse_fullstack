@@ -43,6 +43,7 @@ const BookItemStyle = styled.div`
   }
 
   .content {
+    position: relative;
     padding: 16px;
 
     .title {
