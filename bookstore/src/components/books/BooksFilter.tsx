@@ -19,24 +19,33 @@ const BooksFilter = () => {
     setSearchParams(newSearchParams);
   };
 
-  const currentCategory = searchParams.get('category_id');
-
+  const handleNews = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (newSearchParams.get('news')) {
+      newSearchParams.delete('news');
+    } else {
+      newSearchParams.set('news', 'true');
+    }
+  };
   return (
     <BooksFilterStyle>
       <div className='category'>
         {category.map((item) => (
           <div key={item.id} onClick={() => handleCategory(item.id)}>
-            <Button
-              size={'medium'}
-              scheme={currentCategory === item.id?.toString() ? 'primary' : 'normal'}
-            >
+            <Button size={'medium'} scheme={item.isActive ? 'primary' : 'normal'}>
               {item.category_name}
             </Button>
           </div>
         ))}
       </div>
       <div className='new'>
-        <Button size={'medium'} scheme={'normal'}>
+        <Button
+          size={'medium'}
+          scheme={'normal'}
+          onClick={() => {
+            handleNews();
+          }}
+        >
           신간
         </Button>
       </div>
