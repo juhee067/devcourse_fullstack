@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import BookItem from './BookItem';
+import { dummyBook } from '../../data/books';
 
 const BooksList = () => {
   return (
     <BooksListStyle>
-      <BookItem />
+      <BookItem book={dummyBook} />
     </BooksListStyle>
   );
 };
