@@ -6,16 +6,16 @@ interface StoreState {
   storeLogout: () => void;
 }
 
-const getToken = () => {
+export const getToken = () => {
   const token = localStorage.getItem('token');
   return token;
 };
 
-const setToken = (token: string) => {
+export const setToken = (token: string) => {
   localStorage.setItem('token', token);
 };
 
-const removeToken = () => {
+export const removeToken = () => {
   localStorage.removeItem('token');
 };
 
