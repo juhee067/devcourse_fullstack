@@ -1,14 +1,13 @@
-const router = require('../modules/common');
+import express from 'express';
+const router = express.Router();
+router.use(express.json());
+import { addLike, removeLike } from '../controllers/LikeController.js';
 
 // 좋아요 추가
 router
-  .route('/:id')
-  .post((req, res) => {
-    res.status(200).json({ msg: '좋아요 추가' });
-  })
+  .route('/:liked_book_id')
+  .post(addLike)
   // 좋아요 삭제
-  .delete((req, res) => {
-    res.status(200).json({ msg: '좋아요 삭제' });
-  });
+  .delete(removeLike);
 
-module.exports = router;
+export default router;

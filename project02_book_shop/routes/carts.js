@@ -1,23 +1,16 @@
-const router = require('../modules/common');
+import express from 'express';
+import { addCart, getCart, removeCart } from '../controllers/CartController.js';
+const router = express.Router();
+router.use(express.json());
 
 // 장바구니 담기
 router
   .route('/')
-  .get((req, res) => {
-    res.status(200).json({ msg: '장바구니 담기' });
-  }) // 장바구니 조회
-  .get((req, res) => {
-    res.status(200).json({ msg: '장바구니 조회' });
-  });
+  .post(addCart)
+  // 장바구니 조회 & 선택된 장바구니 아이템 목록조회
+  .get(getCart);
 
 // 장바구니 도서 삭제
-router.route('/:id').get((req, res) => {
-  res.status(200).json({ msg: '장바구니 도서 삭제' });
-});
+router.route('/:cart_id').delete(removeCart);
 
-// 장바구니에서 선택한 주문 예상 상품 목록 조회
-// router.route('/').get((req, res) => {
-//   res.status(200).json({ msg: '장바구니에서 선택한 주문 예상 상품 목록 조회' });
-// });
-
-module.exports = router;
+export default router;

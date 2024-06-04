@@ -1,5 +1,7 @@
-const router = require('../modules/common');
-const { signup, signin, reqPasswordReset, passwordReset } = require('../controller/UserController');
+import express from 'express';
+const router = express.Router();
+router.use(express.json());
+import { signup, signin, reqPasswordReset, passwordReset } from '../controllers/UserController.js';
 
 // 회원가입
 router.post('/signup', signup);
@@ -12,4 +14,4 @@ router
   .post('/reset', reqPasswordReset) // 비밀번호 초기화
   .put(passwordReset);
 
-module.exports = router;
+export default router;
