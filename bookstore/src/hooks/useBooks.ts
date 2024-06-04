@@ -20,6 +20,8 @@ export const useBooks = () => {
     currentPage: 1,
   });
 
+  const [isEmpty, setIsEmpty] = useState(true);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
 
@@ -36,6 +38,7 @@ export const useBooks = () => {
 
         setBooks(res.books);
         setPagination(res.pagination);
+        setIsEmpty(res.books.length === 0);
       } catch (error) {
         console.error('Failed to fetch books', error);
       }
@@ -44,5 +47,5 @@ export const useBooks = () => {
     fetchBooksData();
   }, [location.search]);
 
-  return { books, pagination };
+  return { books, pagination, isEmpty };
 };

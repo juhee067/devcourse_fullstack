@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 import BookItem from './BookItem';
-import { dummyBook } from '../../data/books';
+import { Book } from '../../models/book.model';
 
-const BooksList = () => {
+interface Props {
+  books: Book[];
+}
+
+const BooksList = ({ books }: Props) => {
   return (
     <BooksListStyle>
-      <BookItem book={dummyBook} />
+      {books?.map((item) => (
+        <BookItem key={item.id} book={item} />
+      ))}
     </BooksListStyle>
   );
 };

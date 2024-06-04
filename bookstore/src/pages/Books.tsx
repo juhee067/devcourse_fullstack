@@ -8,16 +8,16 @@ import styled from 'styled-components';
 import { useBooks } from '../hooks/useBooks';
 
 const Books = () => {
-  const { books } = useBooks();
+  const { books, isEmpty, pagination } = useBooks();
+
   return (
     <div>
       <Title size='large'>도서 검색 결과</Title>
       <BooksStyle>
         <BooksFilter />
         <BooksViewSwitcher />
-        <BooksList />
-        <BooksEmpty />
-        <Pagination />
+        {!isEmpty ? <BooksList books={books} /> : <BooksEmpty />}
+        {!isEmpty && <Pagination />}
       </BooksStyle>
     </div>
   );
