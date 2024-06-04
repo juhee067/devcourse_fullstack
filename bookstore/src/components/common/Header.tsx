@@ -5,10 +5,10 @@ import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import { useCategory } from '../../hooks/useCategory';
+import { useAuthStore } from '../../store/authStore';
 
 const CategoryList = () => {
   const { category } = useCategory();
-  console.log(category);
   return (
     <nav className='category'>
       <ul>
@@ -24,23 +24,40 @@ const CategoryList = () => {
   );
 };
 
-const Auth = () => (
-  <nav className='auth'>
-    <ul>
-      <li>
-        <a href='/signIn'>
-          <FaSignInAlt /> 로그인
-        </a>
-      </li>
-      <li>
-        <a href='/signUp'>
-          <FaRegUser />
-          회원가입
-        </a>
-      </li>
-    </ul>
-  </nav>
-);
+const Auth = () => {
+  const { isLoggedIn, storeLogout } = useAuthStore();
+  return (
+    <nav className='auth'>
+      {isLoggedIn ? (
+        <ul>
+          <li>
+            <Link to='/cart'>장바구니</Link>
+          </li>
+          <li>
+            <Link to='/orderlist'>주문 내역</Link>
+          </li>
+          <li>
+            <button onClick={storeLogout}>로그아웃</button>
+          </li>
+        </ul>
+      ) : (
+        <ul>
+          <li>
+            <Link to='/signIn'>
+              <FaSignInAlt /> 로그인
+            </Link>
+          </li>
+          <li>
+            <Link to='/signIn'>
+              <FaRegUser />
+              회원가입
+            </Link>
+          </li>
+        </ul>
+      )}
+    </nav>
+  );
+};
 
 const Header = () => {
   return (
@@ -95,13 +112,17 @@ const HeaderStyle = styled.header`
       display: flex;
       gap: 16px;
       li {
-        a {
+        a,
+        button {
           font-size: 1rem;
           font-weight: 600;
           text-decoration: none;
           display: flex;
           align-items: center;
           line-height: 1;
+          background-color: none;
+          border: 0;
+          cursor: pointer;
           svg {
             margin-right: 6px;
           }
