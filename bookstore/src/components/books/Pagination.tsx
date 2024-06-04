@@ -26,21 +26,14 @@ export default function Pagination({ pagination }: Props) {
           {Array(pages)
             .fill(0)
             .map((_, index) => (
-              <li>
-                <Button
-                  key={index}
-                  size='small'
-                  scheme={index + 1 === currentPage ? 'primary' : 'normal'}
-                  onClick={() => handleClickPage(index + 1)}
-                >
+              <li key={index} onClick={() => handleClickPage(index + 1)}>
+                <Button size='small' scheme={index + 1 === currentPage ? 'primary' : 'normal'}>
                   {index + 1}
                 </Button>
               </li>
             ))}
         </ol>
       )}
-
-      <h1>BooksItem</h1>
     </PaginationStyle>
   );
 }
