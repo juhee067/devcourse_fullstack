@@ -38,6 +38,9 @@ const BookItemStyle = styled.div<Pick<Props, 'view'>>`
   flex-direction: ${({ view }) => (view === 'grid' ? 'column' : 'row')};
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 
+  a {
+    text-decoration: none;
+  }
   .img {
     position: relative;
     border-radius: ${({ theme }) => theme.borderRadius.default};
