@@ -7,6 +7,7 @@ import Error from './components/common/Error';
 import Signup from './pages/Signup';
 import ResetPassword from './pages/ResetPassword';
 import Books from './pages/Books';
+import BookDetail from './pages/BookDetail';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/books',
         element: <Books />,
+      },
+      {
+        path: '/book/:bookId',
+        element: <BookDetail />,
       },
     ],
   },

@@ -4,6 +4,7 @@ import { getImgSrc } from '../../utils/image';
 import { formatNumber } from '../../utils/format';
 import { FaHeart } from 'react-icons/fa';
 import { ViewMode } from './BooksViewSwitcher';
+import { Link } from 'react-router-dom';
 
 interface Props {
   book: Book;
@@ -13,19 +14,21 @@ interface Props {
 const BookItem = ({ book, view }: Props) => {
   return (
     <BookItemStyle view={view}>
-      <div className='img'>
-        <img src={getImgSrc(book.id)} alt={book.title} />
-      </div>
-      <div className='content'>
-        <h2 className='title'>{book.title}</h2>
-        <p className='summary'>{book.summary}</p>
-        <p className='author'>{book.author}</p>
-        <p className='price'>{formatNumber(book.price)}원</p>
-        <div className='likes'>
-          <FaHeart />
-          <span>{book.likes}</span>
+      <Link to={`/book/${book.id}`}>
+        <div className='img'>
+          <img src={getImgSrc(book.id)} alt={book.title} />
         </div>
-      </div>
+        <div className='content'>
+          <h2 className='title'>{book.title}</h2>
+          <p className='summary'>{book.summary}</p>
+          <p className='author'>{book.author}</p>
+          <p className='price'>{formatNumber(book.price)}원</p>
+          <div className='likes'>
+            <FaHeart />
+            <span>{book.likes}</span>
+          </div>
+        </div>
+      </Link>
     </BookItemStyle>
   );
 };
