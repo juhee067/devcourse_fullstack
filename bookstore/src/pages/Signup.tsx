@@ -9,6 +9,7 @@ import { signup } from '../api/auth.api';
 import { useAlert } from '../hooks/useAlert';
 
 export interface SignupProps {
+  username: string;
   email: string;
   password: string;
 }
@@ -21,26 +22,28 @@ function Signup() {
     formState: { errors },
   } = useForm<SignupProps>();
 
-  const onSubmit = (data: SignupProps) => {
-    // 화살표 함수로 수정합니다.
-    signup(data) // 회원가입 데이터를 서버에 전송합니다.
-      .then(() => {
-        // Promise 체이닝을 사용하여 응답을 처리합니다.
-        // 성공 시
-        showAlert('회원가입이 완료되었습니다.'); // 알림창을 띄웁니다.
-        navigate('/login'); // 로그인 페이지로 이동합니다.
-      })
-      .catch((error) => {
-        // 에러가 발생하면
-        console.error('Error signing up:', error); // 콘솔에 에러를 출력합니다.
-        // 에러 처리를 추가할 수 있습니다.
-      });
+  const onSubmit = async (data: SignupProps) => {
+    try {
+      await signup(data);
+      showAlert('회원가입이 완료되었습니다.');
+      navigate('/login');
+    } catch (error) {
+      console.error('회원가입 오류', error);
+    }
   };
   return (
     <div>
       <Title size='large'>회원가입</Title>
       <SignupStyle>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <fieldset>
+            <InputText
+              placeholder='이름'
+              inputType='text'
+              {...register('username', { required: true })}
+            />
+            {errors.username && <p className='error-text'>이름을 입력해주세요.</p>}
+          </fieldset>
           <fieldset>
             <InputText
               placeholder='이메일'

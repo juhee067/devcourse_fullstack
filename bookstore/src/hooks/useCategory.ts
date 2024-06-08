@@ -6,12 +6,16 @@ import { useLocation } from 'react-router-dom';
 export const useCategory = () => {
   const location = useLocation();
   const [category, setCategory] = useState<Category[]>([]);
+
   const setActive = () => {
     const params = new URLSearchParams(location.search);
-    if (params.get('category_id')) {
+
+    const paramsNum = params.get('category_id');
+
+    if (paramsNum) {
       setCategory((prev) => {
         return prev.map((item) => {
-          return { ...item, isActive: item.id === Number(params.get('category_id')) };
+          return { ...item, isActive: item.id === Number(paramsNum) };
         });
       });
     } else {

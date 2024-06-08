@@ -17,9 +17,9 @@ export default function BooksList({ books }: Props) {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-
-    if (params.get(QUERYSTRING.VIEW)) {
-      setView(params.get(QUERYSTRING.VIEW) as ViewMode);
+    const paramsView = params.get(QUERYSTRING.VIEW);
+    if (paramsView) {
+      setView(paramsView as ViewMode);
     }
   }, [location.search]);
   return (

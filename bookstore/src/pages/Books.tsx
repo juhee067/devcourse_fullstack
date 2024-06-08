@@ -16,9 +16,14 @@ const Books = () => {
       <BooksStyle>
         <BooksFilter />
         <BooksViewSwitcher />
-        {!isEmpty && <BooksList books={books} />}
-        {isEmpty && <BooksEmpty />}
-        {!isEmpty && <Pagination pagination={pagination} />}
+        {isEmpty ? (
+          <BooksEmpty />
+        ) : (
+          <>
+            <BooksList books={books} />
+            <Pagination pagination={pagination} />
+          </>
+        )}
       </BooksStyle>
     </div>
   );

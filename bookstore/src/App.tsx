@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import ResetPassword from './pages/ResetPassword';
 import Books from './pages/Books';
 import BookDetail from './pages/BookDetail';
+import Login from './pages/Login';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <Signup />,
+      },
+      {
+        path: '/signin',
+        element: <Login />,
       },
       {
         path: '/reset',

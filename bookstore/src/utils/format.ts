@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const formatNumber = (num: number) => {
   return num.toLocaleString();
 };

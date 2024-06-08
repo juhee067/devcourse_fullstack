@@ -1,24 +1,19 @@
-import styled from 'styled-components';
 import { Title } from '../components/common/Title';
 import InputText from '../components/common/InputText';
 import Button from '../components/common/Button';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
-import { signin, signup } from '../api/auth.api';
+import { signin } from '../api/auth.api';
 import { useAlert } from '../hooks/useAlert';
-import { SignupStyle } from './Signup';
+import { SignupProps, SignupStyle } from './Signup';
 import { useAuthStore } from '../store/authStore';
 
-export interface SignupProps {
-  email: string;
-  password: string;
-}
 function Login() {
   const navigate = useNavigate();
   const showAlert = useAlert();
 
-  const { isLoggedIn, storeLogin, storeLogout } = useAuthStore();
+  const { storeLogin } = useAuthStore();
 
   const {
     register,
@@ -26,17 +21,16 @@ function Login() {
     formState: { errors },
   } = useForm<SignupProps>();
 
-  const onSubmit = (data: SignupProps) => {
-    signin(data).then(
-      (res) => {
-        storeLogin(res.token);
-        showAlert('로그인이 완료되었습니다.');
-        navigate('/');
-      },
-      (error) => {
-        showAlert('실패했습니다');
-      }
-    );
+  const onSubmit = async (data: SignupProps) => {
+    try {
+      const res = await signin(data);
+      storeLogin(res.token);
+      showAlert('로그인이 완료되었습니다.');
+      navigate('/');
+    } catch (error) {
+      showAlert('로그인에 실패했습니다.');
+      console.error('로그인 실패:', error);
+    }
   };
   return (
     <div>

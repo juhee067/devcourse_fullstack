@@ -4,12 +4,13 @@ import Button from '../components/common/Button';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
-import { resetPassword, resetRequest, signup } from '../api/auth.api';
+import { resetPassword, resetRequest } from '../api/auth.api';
 import { useAlert } from '../hooks/useAlert';
 import { SignupStyle } from './Signup';
 import { useState } from 'react';
 
 export interface SignupProps {
+  username: string;
   email: string;
   password: string;
 }
@@ -23,17 +24,17 @@ function ResetPassword() {
     formState: { errors },
   } = useForm<SignupProps>();
 
-  const onSubmit = (data: SignupProps) => {
-    if (resetRequested) {
-      resetPassword(data).then(() => {
+  const onSubmit = async (data: SignupProps) => {
+    try {
+      if (resetRequested) {
+        await resetPassword(data);
         showAlert('비밀번호가 초기화 되었습니다.');
-        navigate('/login');
-      });
-      //초기화
-    } else {
-      resetRequest(data).then(() => {
-        setRequested(true);
-      });
+        return navigate('/login');
+      }
+      await resetRequest(data);
+      setRequested(true);
+    } catch (error) {
+      console.error('회원가입 오류', error);
     }
   };
   return (

@@ -30,12 +30,13 @@ export default function BooksViewSwitcher() {
     const newSearchParams = new URLSearchParams(searchParams);
 
     newSearchParams.set(QUERYSTRING.VIEW, value);
+
     setSearchParams(newSearchParams);
   };
   return (
     <BooksViewSwitcherStyle>
       {viewOptions.map((option) => (
-        <div onClick={() => handleSwitch(option.value as ViewMode)}>
+        <div key={option.value} onClick={() => handleSwitch(option.value as ViewMode)}>
           <Button
             size='medium'
             scheme={searchParams.get(QUERYSTRING.VIEW) === option.value ? 'primary' : 'normal'}

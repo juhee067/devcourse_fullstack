@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useCategory } from '../../hooks/useCategory';
 import { useAuthStore } from '../../store/authStore';
+import ThemeSwitcher from './ThemeSwitch';
 
 const CategoryList = () => {
   const { category } = useCategory();
@@ -48,7 +49,7 @@ const Auth = () => {
             </Link>
           </li>
           <li>
-            <Link to='/signIn'>
+            <Link to='/signUp'>
               <FaRegUser />
               회원가입
             </Link>
@@ -67,7 +68,7 @@ const Header = () => {
       </h1>
       <CategoryList />
       <Auth />
-      {/* <ThemeSwitcher /> */}
+      <ThemeSwitcher />
     </HeaderStyle>
   );
 };
