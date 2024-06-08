@@ -17,13 +17,21 @@ const Cart = () => {
     setCheckedItems([...checkedItems, id]);
   };
 
+  const handleItemDelete = (id: number) => {};
+
   return (
     <>
       <Title size={'large'}>장바구니</Title>{' '}
       <CartStyle>
         <div className='content'>
           {carts.map((item) => (
-            <CartItem key={item.id} cart={item} checkedItems={checkedItems} onCheck={handleCheckItem} />
+            <CartItem
+              key={item.id}
+              cart={item}
+              checkedItems={checkedItems}
+              onCheck={handleCheckItem}
+              onDelete={handleItemDelete}
+            />
           ))}
         </div>
         <div className='summary'></div>

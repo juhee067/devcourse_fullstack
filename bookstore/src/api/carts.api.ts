@@ -15,3 +15,8 @@ export const fetchCart = async () => {
   const response = await httpClient.get<Cart[]>('/carts');
   return response.data;
 };
+
+export const deleteCartItem = async (cartId: number) => {
+  const response = await httpClient.delete(`/carts/${cartId}`);
+  return response.data;
+};
