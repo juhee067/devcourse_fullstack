@@ -16,7 +16,7 @@ export interface SignupProps {
 }
 function ResetPassword() {
   const navigate = useNavigate();
-  const showAlert = useAlert();
+  const { showAlert } = useAlert();
   const [resetRequested, setRequested] = useState(false);
   const {
     register,
@@ -28,7 +28,10 @@ function ResetPassword() {
     try {
       if (resetRequested) {
         await resetPassword(data);
-        showAlert('비밀번호가 초기화 되었습니다.');
+        {
+          showAlert;
+        }
+        ('비밀번호가 초기화 되었습니다.');
         return navigate('/login');
       }
       await resetRequest(data);

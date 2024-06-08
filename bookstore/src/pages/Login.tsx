@@ -11,7 +11,7 @@ import { useAuthStore } from '../store/authStore';
 
 function Login() {
   const navigate = useNavigate();
-  const showAlert = useAlert();
+  const { showAlert } = useAlert();
 
   const { storeLogin } = useAuthStore();
 
@@ -25,10 +25,16 @@ function Login() {
     try {
       const res = await signin(data);
       storeLogin(res.token);
-      showAlert('로그인이 완료되었습니다.');
+      {
+        showAlert;
+      }
+      ('로그인이 완료되었습니다.');
       navigate('/');
     } catch (error) {
-      showAlert('로그인에 실패했습니다.');
+      {
+        showAlert;
+      }
+      ('로그인에 실패했습니다.');
       console.error('로그인 실패:', error);
     }
   };

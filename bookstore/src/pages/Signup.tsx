@@ -15,7 +15,7 @@ export interface SignupProps {
 }
 function Signup() {
   const navigate = useNavigate();
-  const showAlert = useAlert();
+  const { showAlert } = useAlert();
   const {
     register,
     handleSubmit,
@@ -25,7 +25,10 @@ function Signup() {
   const onSubmit = async (data: SignupProps) => {
     try {
       await signup(data);
-      showAlert('회원가입이 완료되었습니다.');
+      {
+        showAlert;
+      }
+      ('회원가입이 완료되었습니다.');
       navigate('/login');
     } catch (error) {
       console.error('회원가입 오류', error);
