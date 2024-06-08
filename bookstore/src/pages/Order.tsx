@@ -51,7 +51,7 @@ const Order = () => {
                 <div className='input'>
                   <InputText inputType='text' {...register('address', { required: true })} />
                 </div>
-                <FindAddressButton />
+                <FindAddressButton onCompleted={(address) => {}} />
               </fieldset>
               {errors.address && <p className='error-text'>주소를 입력해주세요</p>}
               <fieldset>
