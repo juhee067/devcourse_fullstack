@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Title } from '../components/common/Title';
 
 import { CartStyle } from './Cart';
@@ -16,6 +16,8 @@ interface DeliveryForm extends Omit<Delivery, 'deliveryId'> {
 
 const Order = () => {
   const location = useLocation();
+  const { showAlert, showConfirm } = useAlert();
+  const navigation = useNavigate();
   const orderDataFromCart = location.state;
   const { totalPrice, totalQuantity, firstBookTitle } = orderDataFromCart;
   const {
@@ -25,7 +27,6 @@ const Order = () => {
     formState: { errors },
   } = useForm<DeliveryForm>();
 
-  const { showAlert } = useAlert();
   const handlePay = async (data: DeliveryForm) => {
     // 주문 정보를 포함한 주문서 객체를 생성
     const orderData: OrderSheet = {
@@ -35,7 +36,13 @@ const Order = () => {
         address: `${data.address} ${data.detailAddress}`, // 주소와 상세 주소를 결합하여 저장
       },
     };
-    order(orderData).then;
+
+    showConfirm('주문을 진행하시겠습니까?', () => {
+      order(orderData).then(() => {
+        showAlert('주문이 처리되었습니다.');
+        navigation('/orderlist');
+      });
+    });
   };
   return (
     <>
