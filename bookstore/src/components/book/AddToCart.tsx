@@ -14,14 +14,22 @@ const AddToCart = ({ book }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(Number(e.target.value));
   };
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleDecrease = () => {
+    if (quantity === 1) return;
+    setQuantity(quantity - 1);
+  };
   return (
     <AddToCartStyle>
       <div>
         <InputText inputType='number' value={quantity} onChange={handleChange} />
-        <Button size={'medium'} scheme={'normal'}>
+        <Button size={'medium'} scheme={'normal'} onClick={handleIncrease}>
           +
         </Button>
-        <Button size={'medium'} scheme={'primary'}>
+        <Button size={'medium'} scheme={'primary'} onClick={handleDecrease}>
           -
         </Button>
       </div>
