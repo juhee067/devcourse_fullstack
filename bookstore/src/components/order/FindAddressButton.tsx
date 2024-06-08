@@ -14,7 +14,7 @@ const FindAddressButton = ({ onCompleted }: Props) => {
 
   const handleOpen = () => {
     new window.daum.Postcode({
-      oncomplete: (data: any) => {
+      oncomplete: (data: { address: string }) => {
         onCompleted(data.address as string);
       },
     }).open();
@@ -32,7 +32,7 @@ const FindAddressButton = ({ onCompleted }: Props) => {
   });
   return (
     <div>
-      <Button type='button' size='medium' scheme='normal'>
+      <Button type='button' size='medium' scheme='normal' onClick={handleOpen}>
         주소 찾기
       </Button>
     </div>

@@ -8,6 +8,8 @@ import { Delivery, OrderSheet } from '../models/order.model';
 import { useForm } from 'react-hook-form';
 import InputText from '../components/common/InputText';
 import FindAddressButton from '../components/order/FindAddressButton';
+import { order } from '../api/order.api';
+import { useAlert } from '../hooks/useAlert';
 interface DeliveryForm extends Omit<Delivery, 'deliveryId'> {
   detailAddress: string;
 }
@@ -23,6 +25,7 @@ const Order = () => {
     formState: { errors },
   } = useForm<DeliveryForm>();
 
+  const { showAlert } = useAlert();
   const handlePay = async (data: DeliveryForm) => {
     // 주문 정보를 포함한 주문서 객체를 생성
     const orderData: OrderSheet = {
@@ -32,6 +35,7 @@ const Order = () => {
         address: `${data.address} ${data.detailAddress}`, // 주소와 상세 주소를 결합하여 저장
       },
     };
+    order(orderData).then;
   };
   return (
     <>
