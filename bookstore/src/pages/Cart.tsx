@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { Title } from '../components/common/Title';
 import CartItem from '../components/cart/CartItem';
 import { useCart } from '../hooks/useCart';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Empty from '../components/common/Empty';
 import { FaShoppingCart } from 'react-icons/fa';
+import CartSummary from '../components/cart/CartSummary';
 
 const Cart = () => {
   const { carts, deleteCartItem, isEmpty } = useCart();
@@ -23,6 +24,25 @@ const Cart = () => {
     deleteCartItem(id);
   };
 
+  const totalQuantity = useMemo(() => {
+    return carts.reduce((acc, cart) => {
+      if (checkedItems.includes(cart.id)) {
+        return acc + cart.quantity;
+      }
+      return acc;
+    }, 0);
+  }, [carts, checkedItems]);
+
+  const totalPrice = useMemo(() => {
+    return carts.reduce((acc, cart) => {
+      if (checkedItems.includes(cart.id)) {
+        return acc + cart.quantity * cart.price;
+      }
+
+      return acc;
+    }, 0);
+  }, [carts, checkedItems]);
+
   return (
     <>
       <Title size={'large'}>장바구니</Title>{' '}
@@ -40,7 +60,9 @@ const Cart = () => {
                 />
               ))}
             </div>
-            <div className='summary'></div>
+            <div className='summary'>
+              <CartSummary totalQuantity={3} totalPrice={60000} />
+            </div>
           </>
         ) : (
           <Empty
