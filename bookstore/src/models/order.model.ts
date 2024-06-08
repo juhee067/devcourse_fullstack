@@ -16,3 +16,8 @@ export interface OrderSheet {
   firstBookTitle: string;
   deliveryId: number;
 }
+export interface Delivery {
+  address: string;
+  receiver: string;
+  contact: string;
+}
