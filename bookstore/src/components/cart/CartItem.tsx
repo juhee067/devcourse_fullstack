@@ -1,19 +1,22 @@
 import styled from 'styled-components';
-import { Title } from '../components/common/Title'; // 필요한 컴포넌트를 임포트
-import { formatNumber } from '../utils/format'; // 필요한 유틸리티 함수를 임포트
+
 import Button from '../common/Button';
 import CheckIconButton from './CheckIconButton';
+import { Cart } from '../../models/cart.model';
+import { Title } from '../common/Title';
+import { formatNumber } from '../../utils/format';
+import { useMemo } from 'react';
 
 interface CartItemProps {
-  cart: {
-    title: string;
-    summary: string;
-    price: number;
-    quantity: number;
-  };
+  cart: Cart;
+  checkedItems: number[];
 }
 
-function CartItem({ cart }: CartItemProps) {
+function CartItem({ cart, checkedItems }: CartItemProps) {
+  //checkedItems 목록에 내가 있는지 판단 = checked
+  const isChecked = useMemo(() => {
+    return checkedItems.incluedes(cart.id);
+  }, [checkedItems, cart.id]);
   return (
     <CartItemStyle>
       <div className='info'>
