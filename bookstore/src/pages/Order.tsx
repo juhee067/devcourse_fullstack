@@ -7,6 +7,7 @@ import Button from '../components/common/Button';
 import { Delivery, OrderSheet } from '../models/order.model';
 import { useForm } from 'react-hook-form';
 import InputText from '../components/common/InputText';
+import FindAddressButton from '../components/order/FindAddressButton';
 interface DeliveryForm extends Omit<Delivery, 'deliveryId'> {
   detailAddress: string;
 }
@@ -50,9 +51,7 @@ const Order = () => {
                 <div className='input'>
                   <InputText inputType='text' {...register('address', { required: true })} />
                 </div>
-                <Button size='medium' scheme='normal'>
-                  주소 찾기
-                </Button>
+                <FindAddressButton />
               </fieldset>
               {errors.address && <p className='error-text'>주소를 입력해주세요</p>}
               <fieldset>
