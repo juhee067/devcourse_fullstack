@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Title } from '../components/common/Title'; // 필요한 컴포넌트를 임포트
 import { formatNumber } from '../utils/format'; // 필요한 유틸리티 함수를 임포트
 import Button from '../common/Button';
+import CheckIconButton from './CheckIconButton';
 
 interface CartItemProps {
   cart: {
@@ -16,7 +17,7 @@ function CartItem({ cart }: CartItemProps) {
   return (
     <CartItemStyle>
       <div className='info'>
-        <div>체크 버튼</div>
+        <CheckIconButton />
         <div>
           <Title size='medium' color='text'>
             {cart.title}
