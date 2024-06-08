@@ -11,7 +11,7 @@ export const addCart = async (params: AddCartParams) => {
   return response.data;
 };
 
-export const fetch = async () => {
+export const fetchCart = async () => {
   const response = await httpClient.get<Cart[]>('/carts');
   return response.data;
 };
