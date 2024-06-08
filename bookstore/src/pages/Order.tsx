@@ -19,7 +19,7 @@ const Order = () => {
   const {
     register,
     handleSubmit,
-
+    setValue,
     formState: { errors },
   } = useForm<DeliveryForm>();
 
@@ -51,7 +51,11 @@ const Order = () => {
                 <div className='input'>
                   <InputText inputType='text' {...register('address', { required: true })} />
                 </div>
-                <FindAddressButton onCompleted={(address) => {}} />
+                <FindAddressButton
+                  onCompleted={(address) => {
+                    setValue('address', address);
+                  }}
+                />
               </fieldset>
               {errors.address && <p className='error-text'>주소를 입력해주세요</p>}
               <fieldset>
