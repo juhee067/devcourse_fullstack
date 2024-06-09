@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Title } from '../components/common/Title';
+import { useOrders } from '../hooks/useOrders';
+import { formatNumber } from '../utils/format';
 
 const OrderList = () => {
+  const { orders } = useOrders();
   return (
     <>
       <Title size='large'>주문 내역</Title>
@@ -20,16 +24,18 @@ const OrderList = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>12345</td>
-              <td>2024-06-09</td>
-              <td>배송 중</td>
-              <td>홍길동</td>
-              <td>010-1234-5678</td>
-              <td>상품 A</td>
-              <td>2</td>
-              <td>₩50,000</td>
-            </tr>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{order.createdAt}</td>
+                <td>{order.address}</td>
+                <td>{order.receiver}</td>
+                <td>{order.contact}</td>
+                <td>{order.bookTitle}</td>
+                <td>{order.totalQuantity}</td>
+                <td>{formatNumber(order.totalPrice)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </OrderListStyle>

@@ -20,3 +20,13 @@ export const fetchOrders = async () => {
     throw error;
   }
 };
+
+export const fetchOrder = async (id: number) => {
+  try {
+    const response = await httpClient.get<Order[]>(`/orders/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Order failed:', error);
+    throw error;
+  }
+};
