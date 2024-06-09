@@ -21,3 +21,17 @@ export interface Delivery {
   receiver: string;
   contact: string;
 }
+
+export interface OrderDetail {
+  address: string;
+  receiver: string;
+  contact: string;
+}
+
+export interface OrderDetailItem {
+  bookId: number;
+  title: string;
+  author: string;
+  price: number;
+  quantity: number;
+}
