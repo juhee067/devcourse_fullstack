@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { useBooks } from '../hooks/useBooks';
 
 const Books = () => {
-  const { books, isEmpty, pagination } = useBooks();
+  const { books, isEmpty, pagination, isBooksLoading } = useBooks();
 
   return (
     <div>
