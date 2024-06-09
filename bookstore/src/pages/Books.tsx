@@ -6,25 +6,25 @@ import Pagination from '../components/books/Pagination';
 import { Title } from '../components/common/Title';
 import styled from 'styled-components';
 import { useBooks } from '../hooks/useBooks';
+import Loading from '../components/common/Loading';
 
 const Books = () => {
   const { books, isEmpty, pagination, isBooksLoading } = useBooks();
 
+  if (isEmpty) {
+    return <BooksEmpty />;
+  }
+  if (!books || !pagination || isBooksLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <Title size='large'>도서 검색 결과</Title>
       <BooksStyle>
-        <BooksFilter />
-        <BooksViewSwitcher />
-        {isEmpty ? (
-          <BooksEmpty />
-        ) : (
-          <>
-            {books && <BooksList books={books} />}
-
-            {pagination && <Pagination pagination={pagination} />}
-          </>
-        )}
+        <div className='filter'>
+          <BooksFilter />
+          <BooksViewSwitcher />
+        </div>
       </BooksStyle>
     </div>
   );
