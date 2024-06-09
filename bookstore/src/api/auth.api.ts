@@ -1,3 +1,4 @@
+import { LoginProps } from '@/pages/Login';
 import { SignupProps } from '../pages/Signup'; // SignupProps를 올바르게 가져옵니다.
 import { httpClient } from './http';
 
@@ -24,7 +25,7 @@ export const resetPassword = async (data: SignupProps) => {
 interface LoginResponse {
   token: string;
 }
-export const signin = async (data: SignupProps) => {
+export const signin = async (data: LoginProps) => {
   const response = await httpClient.post<LoginResponse>('/users/signin', data);
 
   return response.data;
