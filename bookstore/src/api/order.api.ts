@@ -1,10 +1,9 @@
 import { Order, OrderDetailItem, OrderSheet } from '../models/order.model';
-import { httpClient } from './http';
+import { httpClient, requestHandler } from './http';
 
 export const order = async (orderData: OrderSheet) => {
   try {
-    const response = await httpClient.post('/orders', orderData);
-    return response.data;
+    return await requestHandler<OrderSheet>('post', '/orders', orderData);
   } catch (error) {
     console.error('Order failed:', error);
     throw error;
