@@ -35,3 +35,7 @@ export interface OrderDetailItem {
   price: number;
   quantity: number;
 }
+
+export interface OrderListItem extends Order {
+  detail?: OrderDetailItem[];
+}

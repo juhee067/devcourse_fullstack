@@ -1,29 +1,37 @@
 import { useEffect, useState } from 'react';
-import { Order } from '../models/order.model';
+import { OrderListItem } from '../models/order.model';
 import { fetchOrder, fetchOrders } from '../api/order.api';
 
 export const useOrders = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  useEffect(() => {
-    const loadOrders = async () => {
-      try {
-        const ordersData = await fetchOrders();
-        setOrders(ordersData);
-      } catch (error) {
-        console.error('Failed to fetch orders:', error);
-      }
-    };
 
-    loadOrders();
+  useEffect(() => {
+    fetchOrders().then((orders) => {
+      setOrders(orders);
+    });
   }, []);
 
-  const selectOrderItem = async (orderId: number) => {
-    try {
-      const orderData = await fetchOrder(orderId);
-    } catch (error) {
-      console.error('Failed to fetch orders:', error);
+  const selectOrderItem = (orderId: number) => {
+    if (orders.filter((item) => item.id === orderId)[0].detail) {
+      setSelectedItemId(orderId);
+      return;
     }
+
+    fetchOrder(orderId).then((orderDetail) => {
+      setSelectedItemId(orderId);
+      setOrders(
+        orders.map((item) => {
+          if (item.id === orderId) {
+            return {
+              ...item,
+              detail: orderDetail,
+            };
+          }
+          return item;
+        })
+      );
+    });
   };
 
   return { orders, selectedItemId, selectOrderItem };
