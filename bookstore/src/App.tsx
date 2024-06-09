@@ -12,7 +12,8 @@ import Login from './pages/Login';
 import Cart from './pages/Cart';
 import Order from './pages/Order';
 import { OrderList } from './pages/OrderList';
-const router = createBrowserRouter([
+
+const routes = [
   {
     path: '/',
     element: (
@@ -60,7 +61,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+const router = createBrowserRouter(routes);
 
 function App() {
   return (
