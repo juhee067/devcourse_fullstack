@@ -53,6 +53,10 @@ const router = createBrowserRouter([
         path: '/order',
         element: <Order />,
       },
+      {
+        path: '/orderlist',
+        element: <OrderList />,
+      },
     ],
   },
 ]);
