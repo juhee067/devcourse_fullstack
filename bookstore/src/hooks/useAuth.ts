@@ -12,7 +12,7 @@ export const useAuth = () => {
   const { showAlert } = useAlert();
   const [resetRequested, setRequested] = useState(false);
   //상태
-  const { storeLogin, storeLogout, isLoggedIn } = useAuthStore();
+  const { storeLogin } = useAuthStore();
   //메소드
   const userLogin = async (data: LoginProps) => {
     try {
