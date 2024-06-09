@@ -20,8 +20,9 @@ const Books = () => {
           <BooksEmpty />
         ) : (
           <>
-            <BooksList books={books} />
-            <Pagination pagination={pagination} />
+            {books && <BooksList books={books} />}
+
+            {pagination && <Pagination pagination={pagination} />}
           </>
         )}
       </BooksStyle>
