@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { SignupStyle } from './Signup';
-
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export interface LoginProps {
   email: string;

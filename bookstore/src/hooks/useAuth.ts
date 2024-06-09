@@ -1,10 +1,11 @@
-import { resetPassword, resetRequest, signin, signup } from '@/api/auth.api';
-import { LoginProps } from '@/pages/Login';
-import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from './useAlert';
-import { SignupProps } from '@/pages/Signup';
+
 import { useState } from 'react';
+import { LoginProps } from '../pages/Login';
+import { SignupProps } from '../pages/Signup';
+import { useAuthStore } from '../store/authStore';
+import { resetPassword, resetRequest, signin, signup } from '../api/auth.api';
 
 export const useAuth = () => {
   const navigate = useNavigate();
