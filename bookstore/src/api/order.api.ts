@@ -1,4 +1,4 @@
-import { Order, OrderSheet } from '../models/order.model';
+import { Order, OrderDetailItem, OrderSheet } from '../models/order.model';
 import { httpClient } from './http';
 
 export const order = async (orderData: OrderSheet) => {
@@ -23,7 +23,7 @@ export const fetchOrders = async () => {
 
 export const fetchOrder = async (id: number) => {
   try {
-    const response = await httpClient.get<Order[]>(`/orders/${id}`);
+    const response = await httpClient.get<OrderDetailItem[]>(`/orders/${id}`);
     return response.data;
   } catch (error) {
     console.error('Order failed:', error);
