@@ -5,7 +5,7 @@ import { useOrders } from '../hooks/useOrders';
 import { formatNumber } from '../utils/format';
 
 const OrderList = () => {
-  const { orders } = useOrders();
+  const { orders, selectOrderItem } = useOrders();
   return (
     <>
       <Title size='large'>주문 내역</Title>
@@ -33,7 +33,7 @@ const OrderList = () => {
                 <td>{order.contact}</td>
                 <td>{order.bookTitle}</td>
                 <td>{order.totalQuantity}</td>
-                <td>{formatNumber(order.totalPrice)}</td>
+                <td>{formatNumber(order.totalPrice)} 권</td>
               </tr>
             ))}
           </tbody>
