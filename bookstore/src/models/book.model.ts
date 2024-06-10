@@ -25,5 +25,5 @@ export interface BookReviewItem {
   userName: string;
   content: string;
   createdAt: string;
-  score: string;
+  score: number;
 }
