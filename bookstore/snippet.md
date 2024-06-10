@@ -18,4 +18,31 @@ const Home = () => {
 };
 
 export default Home;
+
 ```
+
+## 커스텀 스니펫 만들기
+```
+{
+    "rfcmy": {
+        "prefix": "rfcmy",
+        "body": [
+            "import React from 'react';",
+            "",
+            "const ${1:ComponentName} = () => {",
+            "    return (",
+            "        <div>",
+            "            $0",
+            "        </div>",
+            "    );",
+            "};",
+            "",
+            "export default ${1:ComponentName};"
+        ],
+        "description": "Create a custom functional component"
+    }
+}
+```
+
+일단 나는 확장프로그램 이슈로 스니펫을 제대로 제작하지 못해봤다.
+확장프로그램이 아니어도 다른 사이트에서 스니펫으로 변경하고자하는 코드를 넣고 변환 후 저장하는 방식도 있는 듯하다
