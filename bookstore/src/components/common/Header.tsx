@@ -1,12 +1,13 @@
 import { styled } from 'styled-components';
 //import ThemeSwitcher from '../header/ThemeSwitch';
 import logo from '../../assets/images/logo.svg';
-import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaSignInAlt, FaRegUser, FaUserCircle } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useCategory } from '../../hooks/useCategory';
 import { useAuthStore } from '../../store/authStore';
 import ThemeSwitcher from './ThemeSwitch';
+import DropDown from './DropDown';
 
 const CategoryList = () => {
   const { category } = useCategory();
@@ -27,35 +28,47 @@ const CategoryList = () => {
 
 const Auth = () => {
   const { isLoggedIn, storeLogout } = useAuthStore();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    storeLogout();
+    navigate('/');
+  };
   return (
     <nav className='auth'>
-      {isLoggedIn ? (
-        <ul>
-          <li>
-            <Link to='/cart'>장바구니</Link>
-          </li>
-          <li>
-            <Link to='/orderlist'>주문 내역</Link>
-          </li>
-          <li>
-            <button onClick={storeLogout}>로그아웃</button>
-          </li>
-        </ul>
-      ) : (
-        <ul>
-          <li>
-            <Link to='/signIn'>
-              <FaSignInAlt /> 로그인
-            </Link>
-          </li>
-          <li>
-            <Link to='/signUp'>
-              <FaRegUser />
-              회원가입
-            </Link>
-          </li>
-        </ul>
-      )}
+      <DropDown toggleButton={<FaUserCircle />}>
+        <>
+          {isLoggedIn && (
+            <ul>
+              <li>
+                <Link to='/cart'>장바구니</Link>
+              </li>
+              <li>
+                <Link to='/orderlist'>주문 내역</Link>
+              </li>
+              <li>
+                <button onClick={handleLogout}>로그아웃</button>
+              </li>
+            </ul>
+          )}
+          {!isLoggedIn && (
+            <ul>
+              <li>
+                <Link to='/login'>
+                  <FaSignInAlt />
+                  로그인
+                </Link>
+              </li>
+              <li>
+                <Link to='/signup'>
+                  <FaRegUser />
+                  회원가입
+                </Link>
+              </li>
+            </ul>
+          )}
+          <ThemeSwitcher />
+        </>
+      </DropDown>
     </nav>
   );
 };

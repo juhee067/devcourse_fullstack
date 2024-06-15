@@ -2,7 +2,7 @@ export interface Book {
   id: number;
   title: string;
   img: number;
-  category_id: number;
+  categoryId: number;
   form: string;
   isbn: string;
   summary: string;
@@ -16,7 +16,7 @@ export interface Book {
 }
 
 export interface BookDetail extends Book {
-  categoryName: string;
+  category: string;
   liked: boolean;
 }
 
@@ -27,3 +27,5 @@ export interface BookReviewItem {
   createdAt: string;
   score: number;
 }
+
+export type BookReviewItemWrite = Pick<BookReviewItem, 'content' | 'score'>;

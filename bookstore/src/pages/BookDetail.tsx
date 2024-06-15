@@ -8,6 +8,10 @@ import { formatDate, formatNumber } from '../utils/format';
 import LikeButton from '../components/book/LikeButton';
 import AddToCart from '../components/book/AddToCart';
 import BookReview from '../components/book/BookReview';
+import { useState } from 'react';
+import Modal from '../components/common/Modal';
+import { Tab, Tabs } from '../components/common/Tab';
+import EllipsisBox from '../components/common/EllipsisBox';
 const bookInfoList = [
   { label: '카테고리', key: 'categoryName' },
   { label: '포맷', key: 'form' },
@@ -31,23 +35,27 @@ const bookInfoList = [
 
 export default function BookDetail() {
   const { bookId } = useParams();
-  const { book, likeToggle, reviews } = useBook(bookId);
+  const { book, likeToggle, reviews, addReview } = useBook(bookId);
+  const [isImgOpen, setIsImgOpen] = useState(false);
 
   if (!book) return null;
   return (
     <BookDetailStyle>
       <header className='header'>
-        <div className='img'>
+        <div className='img' onClick={() => setIsImgOpen(true)}>
           <img src={getImgSrc(book.img)} alt={book.title} />
         </div>
+        <Modal isOpen={isImgOpen} onClose={() => setIsImgOpen(false)}>
+          <img src={getImgSrc(book.img)} alt={book.title} />
+        </Modal>
         <div className='info'>
           <Title size='large' color='text'>
             {book.title}
           </Title>
-          {bookInfoList.map((list) => (
-            <dl key={list.label}>
-              <dt>{list.label}</dt>
-              <dd>{list.filter ? list.filter(book) : book[list.key as keyof IBookDetail]}</dd>
+          {bookInfoList.map((item) => (
+            <dl key={item.key}>
+              <dt>{item.label}</dt>
+              <dd>{item.filter ? item.filter(book) : book[item.key as keyof IBookDetail]}</dd>
             </dl>
           ))}
           <p className='summary'>{book.summary}</p>
@@ -60,13 +68,20 @@ export default function BookDetail() {
         </div>
       </header>
       <div className='content'>
-        <Title size='medium'>상세설명</Title>
-
-        <Title size='medium'>목차</Title>
-        <p className='index'>{book.contents}</p>
-
-        <Title size='medium'>리뷰</Title>
-        <BookReview />
+        <Tabs>
+          <Tab title='상세 설명'>
+            <Title size='medium'>상세 설명</Title>
+            <EllipsisBox linelimit={4}>{book.detail}</EllipsisBox>
+          </Tab>
+          <Tab title='목차'>
+            <Title size='medium'>목차</Title>
+            <EllipsisBox linelimit={2}>{book.contents}</EllipsisBox>
+          </Tab>
+          <Tab title='리뷰'>
+            <Title size='medium'>리뷰</Title>
+            <BookReview reviews={reviews} onAdd={addReview} />
+          </Tab>
+        </Tabs>
       </div>
     </BookDetailStyle>
   );
@@ -84,8 +99,10 @@ const BookDetailStyle = styled.div`
       img {
         width: 100%;
         height: auto;
+        cursor: pointer;
       }
     }
+
     .info {
       flex: 1;
       display: flex;
@@ -95,20 +112,14 @@ const BookDetailStyle = styled.div`
       dl {
         display: flex;
         margin: 0;
-
         dt {
           width: 80px;
-          color: ${({ theme }) => theme.colors.secondary};
+          color: ${({ theme }) => theme.color.secondary};
         }
-
         a {
-          color: ${({ theme }) => theme.colors.primary};
-          text-decoration: none;
+          color: ${({ theme }) => theme.color.primary};
         }
       }
     }
-  }
-
-  .content {
   }
 `;
