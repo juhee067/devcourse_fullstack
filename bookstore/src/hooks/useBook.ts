@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BookDetail, BookReviewItem } from '../models/book.model';
+import { BookDetail, BookReviewItem, BookReviewItemWrite } from '../models/book.model';
 import { fetchBook, likeBook, unlikeBook } from '../api/book.api';
 import { useAuthStore } from '../store/authStore';
 import { useAlert } from './useAlert';
 import { addCart } from '../api/carts.api';
-import { fetchBookReview } from '../api/review.api';
+import { addBookReview, fetchBookReview } from '../api/review.api';
 
 export const useBook = (bookId: string | undefined) => {
   const [book, setBook] = useState<BookDetail | null>(null);
@@ -61,5 +61,13 @@ export const useBook = (bookId: string | undefined) => {
     });
   }, [bookId]);
 
-  return { book, likeToggle, addToCart, cartAdded, reviews };
+  const addReview = (data: BookReviewItemWrite) => {
+    if (!book) return;
+
+    addBookReview(book.id.toString(), data).then((res) => {
+      showAlert(res?.message);
+    });
+  };
+
+  return { book, likeToggle, addToCart, cartAdded, reviews, addReview };
 };

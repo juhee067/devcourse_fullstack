@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { formatDate, formatNumber } from '../utils/format';
 import LikeButton from '../components/book/LikeButton';
 import AddToCart from '../components/book/AddToCart';
+import BookReview from '../components/book/BookReview';
 const bookInfoList = [
   { label: '카테고리', key: 'categoryName' },
   { label: '포맷', key: 'form' },
@@ -63,6 +64,9 @@ export default function BookDetail() {
 
         <Title size='medium'>목차</Title>
         <p className='index'>{book.contents}</p>
+
+        <Title size='medium'>리뷰</Title>
+        <BookReview />
       </div>
     </BookDetailStyle>
   );
